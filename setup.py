@@ -42,6 +42,7 @@ setup(
     url='https://github.com/citixen/citixen-authorization',
     packages=[
         'companies',
+        'utils'
     ],
     include_package_data=True,
     install_requires=[],
