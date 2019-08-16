@@ -5,5 +5,5 @@ from django.conf.urls import url, include
 
 
 urlpatterns = [
-    url(r'^', include('companies.urls', namespace='companies')),
+    url(r'^', include(('companies.urls', 'companies'), namespace='companies')),
 ]

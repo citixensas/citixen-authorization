@@ -2,7 +2,7 @@ from faker import Faker
 from test_plus import TestCase
 
 from companies.models import Company
-from companies.tests.factories import HeadquarterFactory, CompanyFactory
+from ..factories import HeadquarterFactory, CompanyFactory
 
 fake = Faker()
 

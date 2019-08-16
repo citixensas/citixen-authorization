@@ -5,12 +5,12 @@
 test_citixen-authorization
 ------------
 
-Tests for `citixen-authorization` models module.
+Tests for `citixen-authorization` test_models module.
 """
 
 from django.test import TestCase
 
-from companies import models
+from companies.models import Company
 
 
 class TestCompanies(TestCase):
@@ -22,4 +22,6 @@ class TestCompanies(TestCase):
         pass
 
     def tearDown(self):
-        pass
+        company = Company.objects.create(name='Compañía de prueba')
+        self.assertEqual('Compañía de prueba', company.__str__())
+        assert True

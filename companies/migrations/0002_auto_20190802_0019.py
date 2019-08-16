@@ -36,12 +36,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='company',
-            name='created_by',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='company_created_by', to=settings.AUTH_USER_MODEL),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='company',
             name='email',
             field=models.EmailField(default='', max_length=100),
             preserve_default=False,
@@ -72,12 +66,6 @@ class Migration(migrations.Migration):
             model_name='headquarter',
             name='created_at',
             field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='headquarter',
-            name='created_by',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='headquarters_created_by', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(

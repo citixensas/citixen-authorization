@@ -3,7 +3,7 @@
 from faker import Faker
 from rest_framework.reverse import reverse_lazy, reverse
 
-from companies.tests.factories import CompanyFactory, HeadquarterFactory
+from ..factories import CompanyFactory, HeadquarterFactory
 from companies.models import Company
 from citixen.users.tests.factories import ManagerFactory, AdminFactory
 

@@ -4,7 +4,7 @@ import factory
 from factory.django import DjangoModelFactory
 from faker import Faker
 
-from ..models import Company, Headquarter
+from companies.models import Company, Headquarter
 
 fake = Faker()
 

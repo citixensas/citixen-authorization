@@ -18,8 +18,8 @@ class Headquarter(models.Model):
     phone = models.CharField(max_length=15, null=True)
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
-    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE,
-                                   related_name='headquarters_created_by')  # pylint: disable=no-name-in-module
+    #created_by = test_models.ForeignKey('users.User', on_delete=test_models.CASCADE,
+    #                               related_name='headquarters_created_by')  # pylint: disable=no-name-in-module
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
