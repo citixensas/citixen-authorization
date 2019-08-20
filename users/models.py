@@ -86,6 +86,9 @@ class AppUser(PermissionsMixin):
 
     uuid = models.UUIDField()
 
+    class Meta:
+        abstract = True
+
     def __str__(self):
         """Return remote user identifier."""
         return self.uuid
