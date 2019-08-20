@@ -19,16 +19,3 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
-
-
-from django.contrib.auth.models import User, PermissionsMixin
-
-
-
-
-from citi_auth.users.models import AppUser
-
-
-# This goes in each app implementation
-class AppUser(PermissionsMixin):
-    remote_user_id = models.UUIDField()
