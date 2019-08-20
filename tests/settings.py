@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sites",
     "companies",
+    "users",
 ]
 
 SITE_ID = 1
