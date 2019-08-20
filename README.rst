@@ -2,7 +2,7 @@
 Citixen Authorization
 =============================
 
-A simple application to manage companies, headquarters and the authorization system in general.
+A simple application to manage the authorization system in general.
 
 Documentation
 -------------
