@@ -30,4 +30,4 @@ htmlcov
 
 # Pycharm/Intellij
 .idea
-venv
+venv/
