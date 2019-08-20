@@ -1,6 +1,19 @@
 from rest_framework import serializers
 
-from companies.models import Headquarter
+from companies.models import Company, Headquarter
+
+
+class CompanyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('nit', 'name', 'email', 'country', 'is_active',)
+        read_only_fields = ('is_active',)
+
+
+class CompanyListModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = ('pk', 'name',)
 
 
 class HeadquarterModelSerializer(serializers.ModelSerializer):
@@ -10,7 +23,7 @@ class HeadquarterModelSerializer(serializers.ModelSerializer):
         read_only_fields = ('is_active',)
 
     def create(self, validated_data):
-        created_by = self.context['request'].user
+        created_by = self.context['request'].user.uuid  # Only for superusers
         return Headquarter.objects.create(**validated_data, created_by=created_by)
 
 
