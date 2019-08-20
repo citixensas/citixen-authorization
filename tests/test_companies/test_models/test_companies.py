@@ -12,7 +12,6 @@ class CompanyModelTestCase(TestCase):
         self.user = self.make_user()
 
     def test_return_company_string_representation(self):
-        company = Company.objects.create(name='Compañía de prueba',
-                          created_by=self.user)
+        company = Company.objects.create(name='Compañía de prueba',)
         self.assertEqual('Compañía de prueba', company.__str__())
 
