@@ -46,7 +46,7 @@ setup(
     include_package_data=True,
     install_requires=[],
     zip_safe=False,
-    keywords='citixen-authorization',
+    keywords='corexen',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django :: 1.11',
