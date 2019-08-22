@@ -6,7 +6,7 @@ import factory
 from factory.django import DjangoModelFactory
 from faker import Faker
 
-from companies.models import Company, Headquarter
+from corexen.companies import Company, Headquarter
 
 fake = Faker()
 

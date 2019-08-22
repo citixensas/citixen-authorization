@@ -3,11 +3,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CompaniesConfig(AppConfig):
-    name = "companies"
+    name = "corexen.companies"
     verbose_name = _("Companies")
 
     def ready(self):
         try:
-            import companies.signals  # pylint: disable=W0611
+            from corexen import companies
         except ImportError:
             pass

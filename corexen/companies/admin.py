@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Headquarter
-from companies.models import Company
+from corexen.companies import Company
 
 admin.site.register(Company)
 admin.site.register(Headquarter)

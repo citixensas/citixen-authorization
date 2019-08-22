@@ -33,7 +33,7 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
-    name='citixen-authorization',
+    name='corexen',
     version=version,
     description="""A simple application to manage companies, headquarters and the authorization system in general.""",
     long_description=readme + '\n\n' + history,
@@ -41,7 +41,6 @@ setup(
     author_email='citixen@gmail.com',
     url='https://github.com/citixen/citixen-authorization',
     packages=[
-        'companies',
         'corexen',
     ],
     include_package_data=True,

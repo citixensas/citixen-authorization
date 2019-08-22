@@ -1,7 +1,7 @@
 from faker import Faker
 from test_plus import TestCase
 
-from companies.models import Company
+from corexen.companies.models import Company
 
 fake = Faker()
 
