@@ -21,7 +21,7 @@ def get_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-version = get_version("companies", "__init__.py")
+version = get_version("corexen", "__init__.py")
 
 if sys.argv[-1] == 'tag':
     print("Tagging the version on git:")
@@ -43,7 +43,7 @@ setup(
     packages=[
         'companies',
         'users',
-        'utils',
+        'corexen',
     ],
     include_package_data=True,
     install_requires=[],
