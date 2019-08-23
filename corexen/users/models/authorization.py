@@ -4,7 +4,7 @@ from corexen.companies.models import Headquarter
 from django.contrib.auth.models import Permission
 from django.db import models
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from corexen.utils.models import CitixenModel
 
 
@@ -16,7 +16,7 @@ class UserPermission(CitixenModel):
     - Company permissoin:     users.add_operator.1c  - Add operators in company #1
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
     headquarter = models.ForeignKey(
