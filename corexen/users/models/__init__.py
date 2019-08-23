@@ -1,1 +1,2 @@
-from .authorization import *
+from .authorization import UserPermission
+from .users import User
