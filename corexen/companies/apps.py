@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CompaniesConfig(AppConfig):
-    name = "corexen.companies"
+    name = "companies"
     verbose_name = _("Companies")
 
     def ready(self):

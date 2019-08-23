@@ -2,7 +2,7 @@ import importlib
 from . import *
 
 
-__version__ = '0.2.2'
+__version__ = '0.3.4'
 
 
 def _import_class_from_string(class_path):
