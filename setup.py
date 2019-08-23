@@ -5,7 +5,7 @@ import re
 import sys
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
@@ -40,9 +40,7 @@ setup(
     author='Citixen S.A.S',
     author_email='citixen@gmail.com',
     url='https://github.com/citixen/citixen-authorization',
-    packages=[
-        'corexen',
-    ],
+    packages=find_packages(),
     include_package_data=True,
     install_requires=[],
     zip_safe=False,
