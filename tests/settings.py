@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     "corexen.users",
 ]
 
+AUTH_USER_MODEL = 'users.User'
+
 SITE_ID = 1
 
 if django.VERSION >= (1, 10):

@@ -1,5 +1,5 @@
 import importlib
-from . import companies, users, utils
+from . import companies, utils, users
 
 
 __version__ = '0.3.4'
