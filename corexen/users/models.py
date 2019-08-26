@@ -17,3 +17,9 @@ class UserPermission(CitixenModel):
     permission = models.ForeignKey('auth.Permission', on_delete=models.DO_NOTHING)
 
     headquarter = models.ForeignKey(Headquarter, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        """Return friendly description."""
+        return '{user} can {perm} in {headquarter}'.format(
+            user=self.user.username, perm=self.permission, headquarter=self.headquarter)
+

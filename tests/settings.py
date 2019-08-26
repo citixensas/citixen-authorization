@@ -28,6 +28,12 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'users.User'
 
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
+    "corexen.users.backends.AuthenticationBackend",
+]
+
 SITE_ID = 1
 
 if django.VERSION >= (1, 10):
