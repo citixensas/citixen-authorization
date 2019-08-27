@@ -4,7 +4,6 @@ from django.contrib.auth.models import Permission
 from faker import Faker
 from test_plus import TestCase
 
-#from companies.factories import HeadquarterFactory, CompanyFactory
 from corexen.users.models import UserPermission
 from tests.test_companies.factories import CompanyFactory, HeadquarterFactory
 
@@ -58,4 +57,3 @@ class UserModelTestCase(TestCase):
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename,
                                       headquarter.pk)
         self.assertFalse(self.user.has_perm(perm_codename))
-

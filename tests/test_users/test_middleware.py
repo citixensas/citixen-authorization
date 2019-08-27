@@ -2,6 +2,7 @@ from django.conf.urls import url
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from corexen.utils.testing import CitixenAPITestCase
 
@@ -21,8 +22,7 @@ urlpatterns = [
 ]
 
 
-class TestMiddleware(CitixenAPITestCase):
-
+class TestMiddlewareTestCase(CitixenAPITestCase):
     def test_can_access_request_post_without_login_required(self):
         response = self.client.post('/post', {'foo': 'bar'})
         self.response_200(response)
