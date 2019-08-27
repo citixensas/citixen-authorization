@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "corexen.companies",
     "corexen.users",
+    "corexen.permissions",
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -47,4 +48,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'corexen.users.authentication.CitixenAuthentication',
     ),
+    # Pagination
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
 }

@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 from corexen.companies.models import Headquarter
@@ -27,6 +27,8 @@ class User(RemoteUserModelMixin,
     user_permissions = models.ManyToManyField(
         'auth.Permission',
         through='users.UserPermission')
+
+    objects = UserManager()
 
 
 class UserPermission(CitixenModel):
