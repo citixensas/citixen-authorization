@@ -40,7 +40,7 @@ class TestMiddleware(CitixenAPITestCase):
         response = self.client.post('/post_login', {'foo': 'bar'}, format='json')
         assert response.status_code == 302
 
-    def test_not_can_access_request_post_with_valid_token(self):
+    def test_can_access_request_post_with_valid_token(self):
         token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTY3NzgxNjAwLCJqdGkiOiIzNWE3OTQwMzE3Zjc0YmNjYWE4ZTM1N2EwY2RjZGQ4NCIsInVzZXJfaWQiOjEwNSwiZmlyc3RfbmFtZSI6Ik5pY29sZSIsImxhc3RfbmFtZSI6IldhbGxhY2UiLCJlbWFpbCI6ImpvaG4yNUBjYXJ0ZXIuY29tIiwidXNlcm5hbWUiOiJsb2dhbjA0IiwidXVpZCI6IjBmMDYwMzA2LTdhYWItNDJlNy04MDJlLTkyM2JlZTVmMWY5NCJ9.UrKMoEYes-4LDr2pVQl-RkcSiZ4Nfn0l22-qjn5rgZM'
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % token)
         response = self.client.post('/post_login', {'foo': 'bar'}, format='json')
