@@ -1,8 +1,6 @@
 from django.conf.urls import url
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.test import APITestCase
 from rest_framework.views import APIView
 
 from corexen.utils.testing import CitixenAPITestCase
@@ -13,8 +11,8 @@ class PostView(APIView):
         return Response(data=request.data, status=200)
 
 
-class PostWithAuthView(LoginRequiredMixin, PostView):
-    pass
+class PostWithAuthView(PostView):
+    permission_classes = (IsAuthenticated,)
 
 
 urlpatterns = [
@@ -41,7 +39,12 @@ class TestMiddleware(CitixenAPITestCase):
         assert response.status_code == 302
 
     def test_can_access_request_post_with_valid_token(self):
-        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTY3NzgxNjAwLCJqdGkiOiIzNWE3OTQwMzE3Zjc0YmNjYWE4ZTM1N2EwY2RjZGQ4NCIsInVzZXJfaWQiOjEwNSwiZmlyc3RfbmFtZSI6Ik5pY29sZSIsImxhc3RfbmFtZSI6IldhbGxhY2UiLCJlbWFpbCI6ImpvaG4yNUBjYXJ0ZXIuY29tIiwidXNlcm5hbWUiOiJsb2dhbjA0IiwidXVpZCI6IjBmMDYwMzA2LTdhYWItNDJlNy04MDJlLTkyM2JlZTVmMWY5NCJ9.UrKMoEYes-4LDr2pVQl-RkcSiZ4Nfn0l22-qjn5rgZM'
+        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiw' \
+                'iZXhwIjoxNTY3NzgxNjAwLCJqdGkiOiIzNWE3OTQwMzE3Zjc0YmNjYWE4ZTM1N2EwY2R' \
+                'jZGQ4NCIsInVzZXJfaWQiOjEwNSwiZmlyc3RfbmFtZSI6Ik5pY29sZSIsImxhc3RfbmF' \
+                'tZSI6IldhbGxhY2UiLCJlbWFpbCI6ImpvaG4yNUBjYXJ0ZXIuY29tIiwidXNlcm5hbWUi' \
+                'OiJsb2dhbjA0IiwidXVpZCI6IjBmMDYwMzA2LTdhYWItNDJlNy04MDJlLTkyM2JlZTVm' \
+                'MWY5NCJ9.UrKMoEYes-4LDr2pVQl-RkcSiZ4Nfn0l22-qjn5rgZM'
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % token)
         response = self.client.post('/post_login', {'foo': 'bar'}, format='json')
-        assert response.status_code == 200
+        self.response_200(response)
