@@ -10,7 +10,8 @@ class CitixenAuthentication(JWTAuthentication):
         Attempts to find and return a user using the given validated token.
         """
         try:
-            user_id = validated_token[api_settings.USER_ID_CLAIM]
+            #slug_id = api_settings.USER_ID_CLAIM
+            user_uuid = validated_token['uuid']
         except KeyError:
             raise InvalidToken(_('Token contained no recognizable user identification'))
         user = None  # Get user info

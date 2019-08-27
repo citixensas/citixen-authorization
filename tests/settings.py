@@ -40,3 +40,5 @@ MIDDLEWARE = [
     "corexen.users.middleware.JWTAuthenticationMiddleware",
 ]
 ADMIN_URL = "admin/"
+
+SECRET_KEY = "Jb4KwtjG4CTOc3ZviJGrxSsNecosF9n5ODbUker3rmd4GdZF4i7Zd79hDbonb0RD"
