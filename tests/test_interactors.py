@@ -35,18 +35,24 @@ class UserInteractorTest(CitixenAPITestCase):
             'password': '',
             'password_confirmation': ''
         }
-        created, app_user = UserInteractor.create_user(**data)
+        created, app_user, remote_response = UserInteractor.create_user(**data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
 
     def test_create_user_fail_already_exist(self):
         UserInteractor.create_user(**self.valid_data)
-        created, app_user = UserInteractor.create_user(**self.valid_data)
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
 
     @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:8000/random_404/")
     def test_create_user_fail_404(self):
-        created, app_user = UserInteractor.create_user(**self.valid_data)
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
+        self.assertFalse(created)
+        self.assertIsNone(app_user)
+
+    @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:5732/random_404/")
+    def test_create_user_fail_url_api_invalid(self):
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)

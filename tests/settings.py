@@ -54,4 +54,5 @@ REST_FRAMEWORK = {
 }
 
 # Corexen
-BASE_AUTHENTICATION_URL_API = "http://127.0.0.1:8000/api/"
+BASE_AUTHENTICATION_URL_API = 'http://127.0.0.1:8000/api/'
+URL_SIGNUP = 'authentication/signup/'
