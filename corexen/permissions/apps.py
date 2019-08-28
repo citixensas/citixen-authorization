@@ -10,6 +10,6 @@ class PermissionsConfig(AppConfig):
 
     def ready(self):
         try:
-            import corexen.permissions.signals  # pylint: disable=W0611
+            from corexen.permissions.signals import *
         except ImportError:
             pass
