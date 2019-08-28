@@ -7,4 +7,3 @@ router = routers.DefaultRouter()
 router.register(r'groups', GroupTemplateViewSet)
 
 urlpatterns = router.urls
-print(urlpatterns)
