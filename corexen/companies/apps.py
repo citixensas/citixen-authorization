@@ -8,6 +8,6 @@ class CompaniesConfig(AppConfig):
 
     def ready(self):
         try:
-            from corexen import companies
+            import corexen.companies.signals  # pylint: disable=W0611
         except ImportError:
             pass

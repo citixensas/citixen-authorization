@@ -8,6 +8,6 @@ class UsersConfig(AppConfig):
 
     def ready(self):
         try:
-            from corexen import users
+            import corexen.users.signals  # pylint: disable=W0611
         except ImportError:
             pass
