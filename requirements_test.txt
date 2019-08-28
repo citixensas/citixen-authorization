@@ -9,6 +9,4 @@ django-test-plus
 factory_boy
 djangorestframework_simplejwt
 django-allauth
-
-
-# Additional test requirements go here
+Pillow
