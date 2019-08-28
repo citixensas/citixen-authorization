@@ -1,8 +1,8 @@
 import requests
-
+from requests.exceptions import ConnectionError, ConnectTimeout
 from django.conf import settings
+
 from corexen.users.models import AppUser
-from requests.exceptions import ConnectionError
 
 
 class UserInteractor(object):
@@ -28,6 +28,6 @@ class UserInteractor(object):
                 uuid = remote_response['uuid']
                 user = AppUser.objects.create(uuid=uuid)
                 created = True
-        except ConnectionError:
+        except (ConnectionError, ConnectTimeout) as e:
             pass
         return created, user, remote_response

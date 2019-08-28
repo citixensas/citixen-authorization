@@ -3,6 +3,7 @@ import uuid
 import requests_mock
 from django.test import override_settings
 from faker import Faker
+from requests.exceptions import ConnectTimeout, ConnectionError
 
 from corexen.users.interactors import UserInteractor
 from corexen.users.models import AppUser
@@ -11,6 +12,7 @@ from corexen.utils.testing import CitixenAPITestCase
 fake = Faker()
 
 
+@requests_mock.Mocker()
 class UserInteractorTest(CitixenAPITestCase):
     def setUp(self):
         fake_name = fake.name()
@@ -24,7 +26,6 @@ class UserInteractorTest(CitixenAPITestCase):
             'password_confirmation': fake_password
         }
 
-    @requests_mock.Mocker()
     def test_create_user_success(self, m):
         fake_uuid = str(uuid.uuid1())
         m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/',
@@ -34,7 +35,6 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertEquals(AppUser.objects.count(), 1)
         self.assertEquals(app_user.uuid, fake_uuid)
 
-    @requests_mock.Mocker()
     def test_create_user_fail_without_valid_data(self, m):
         m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/', json={}, status_code=400)
         data = {
@@ -49,7 +49,6 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertFalse(created)
         self.assertIsNone(app_user)
 
-    @requests_mock.Mocker()
     def test_create_user_fail_already_exist(self, m):
         m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/',
                        json={
@@ -66,7 +65,6 @@ class UserInteractorTest(CitixenAPITestCase):
             'email': ['El correo ya está en uso.']
         })
 
-    @requests_mock.Mocker()
     @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:8000/random_404/")
     def test_create_user_fail_404(self, m):
         m.register_uri('POST', 'http://127.0.0.1:8000/random_404/authentication/signup/', json={}, status_code=404)
@@ -75,7 +73,15 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertIsNone(app_user)
 
     @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:5732/api/")
-    def test_create_user_fail_url_api_invalid(self):
+    def test_create_user_fail_connection_error(self, m):
+        m.register_uri('POST', 'http://127.0.0.1:5732/api/authentication/signup/', exc=ConnectionError)
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
+        self.assertFalse(created)
+        self.assertIsNone(app_user)
+
+    @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:5732/api/")
+    def test_create_user_fail_connection_time_out(self, m):
+        m.register_uri('POST', 'http://127.0.0.1:5732/api/authentication/signup/', exc=ConnectTimeout)
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
