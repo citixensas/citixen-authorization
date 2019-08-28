@@ -8,6 +8,7 @@ class Company(models.Model):
     name = models.CharField(max_length=120)
     email = models.EmailField(max_length=100)
     country = models.CharField(max_length=30)  # This will be a relationship
+    image_url = models.ImageField(upload_to='companies/images/')
 
     is_active = models.BooleanField(default=False)
 
@@ -25,6 +26,7 @@ class Headquarter(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=120)
+    image_url = models.ImageField(upload_to='headquarters/images/')
 
     email = models.EmailField(max_length=100, null=True)
     phone = models.CharField(max_length=15, null=True)

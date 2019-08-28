@@ -5,11 +5,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class PermissionsConfig(AppConfig):
-    name = "citixen.permissions"
+    name = "corexen.permissions"
     verbose_name = _("Permission")
 
     def ready(self):
         try:
-            import citixen.permissions.signals  # pylint: disable=W0611
+            from corexen.permissions.signals import *
         except ImportError:
             pass

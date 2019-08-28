@@ -8,6 +8,6 @@ class UsersConfig(AppConfig):
 
     def ready(self):
         try:
-            from corexen import users
+            from corexen.users.signals import *
         except ImportError:
             pass

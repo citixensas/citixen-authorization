@@ -10,4 +10,4 @@ Development Lead
 Contributors
 ------------
 
-Developers of citixen
+* Oscar Pérez <mr.omiguelperez@gmail.com>

@@ -8,6 +8,6 @@ class CompaniesConfig(AppConfig):
 
     def ready(self):
         try:
-            from corexen import companies
+            from corexen.companies.signals import *
         except ImportError:
             pass
