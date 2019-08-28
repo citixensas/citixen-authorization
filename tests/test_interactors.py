@@ -1,9 +1,12 @@
+import uuid
+
+import requests_mock
 from django.test import override_settings
+from faker import Faker
 
 from corexen.users.interactors import UserInteractor
 from corexen.users.models import AppUser
 from corexen.utils.testing import CitixenAPITestCase
-from faker import Faker
 
 fake = Faker()
 
@@ -21,12 +24,19 @@ class UserInteractorTest(CitixenAPITestCase):
             'password_confirmation': fake_password
         }
 
-    def test_create_user_success(self):
-        UserInteractor.create_user(**self.valid_data)
+    @requests_mock.Mocker()
+    def test_create_user_success(self, m):
+        fake_uuid = str(uuid.uuid1())
+        m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/',
+                       json={'uuid': fake_uuid}, status_code=201)
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
+        self.assertTrue(created)
         self.assertEquals(AppUser.objects.count(), 1)
-        app_user = AppUser.objects.get()
+        self.assertEquals(app_user.uuid, fake_uuid)
 
-    def test_create_user_fail_without_valid_data(self):
+    @requests_mock.Mocker()
+    def test_create_user_fail_without_valid_data(self, m):
+        m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/', json={}, status_code=400)
         data = {
             'first_name': '',
             'last_name': '',
@@ -39,19 +49,32 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertFalse(created)
         self.assertIsNone(app_user)
 
-    def test_create_user_fail_already_exist(self):
+    @requests_mock.Mocker()
+    def test_create_user_fail_already_exist(self, m):
+        m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/',
+                       json={
+                           'username': ['El nombre de usuario ya está en uso.'],
+                           'email': ['El correo ya está en uso.']
+                       },
+                       status_code=400)
         UserInteractor.create_user(**self.valid_data)
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
+        self.assertEquals(remote_response, {
+            'username': ['El nombre de usuario ya está en uso.'],
+            'email': ['El correo ya está en uso.']
+        })
 
+    @requests_mock.Mocker()
     @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:8000/random_404/")
-    def test_create_user_fail_404(self):
+    def test_create_user_fail_404(self, m):
+        m.register_uri('POST', 'http://127.0.0.1:8000/random_404/authentication/signup/', json={}, status_code=404)
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
 
-    @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:5732/random_404/")
+    @override_settings(BASE_AUTHENTICATION_URL_API="http://127.0.0.1:5732/api/")
     def test_create_user_fail_url_api_invalid(self):
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
