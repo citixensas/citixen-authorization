@@ -4,7 +4,7 @@ from django.contrib.auth.models import Permission
 from rest_framework_simplejwt.tokens import RefreshToken
 from test_plus import APITestCase, TestCase
 
-from corexen.users.models import UserPermission
+from corexen.users.models import UserPermission, AppUser
 
 
 class CitixenTestCase(TestCase):
@@ -32,6 +32,11 @@ class CitixenTestCase(TestCase):
         user.is_superuser = True
         user.save()
         return user
+
+    def make_remote_user(self, **kwargs):
+        user = super().make_user(**kwargs)
+        app_user = AppUser.objects.create(uuid=user.uuid)
+        return user, app_user
 
 
 class CitixenAPITestCase(CitixenTestCase,
