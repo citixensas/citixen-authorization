@@ -12,7 +12,7 @@ class Company(models.Model):
 
     is_active = models.BooleanField(default=False)
 
-    created_by = models.UUIDField(null=True)
+    created_by = models.ForeignKey('users.AppUser', on_delete=models.CASCADE, related_name='companies')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,7 +38,7 @@ class Headquarter(models.Model):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
 
-    created_by = models.UUIDField(null=True)
+    created_by = models.ForeignKey('users.AppUser', on_delete=models.CASCADE, related_name='headquarters')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

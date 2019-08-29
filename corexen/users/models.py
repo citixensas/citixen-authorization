@@ -13,6 +13,9 @@ class RemoteUserModelMixin(CitixenModel):
 
     uuid = models.UUIDField(default=uuid4, unique=True)
 
+    class Meta:
+        abstract = True
+
 
 class AppUser(RemoteUserModelMixin):
     """This model will be used in each app that implements the authorization package."""
