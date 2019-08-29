@@ -10,3 +10,4 @@ factory_boy
 djangorestframework_simplejwt
 django-allauth
 Pillow
+requests_mock
