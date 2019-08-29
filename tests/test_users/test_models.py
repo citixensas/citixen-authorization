@@ -59,7 +59,7 @@ class UserModelTestCase(CitixenTestCase):
         self.assertFalse(self.app_user.has_perm(perm_codename))
 
 
-class AppUserModelTestCase(TestCase):
+class AppUserModelTestCase(CitixenTestCase):
 
     def setUp(self):
         self.user = self.make_user()

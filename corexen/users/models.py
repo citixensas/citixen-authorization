@@ -323,9 +323,6 @@ class AppUser(CitixenModel, AppPermissionsMixin, RemoteUserModelMixin):
 
     def __str__(self):
         return 'Remote User: {uuid}'.format(uuid=self.uuid)
-    def __str__(self):
-        """Return remote unique idenfier."""
-        return str(self.uuid)
 
     @property
     def is_anonymous(self):
