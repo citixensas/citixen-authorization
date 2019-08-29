@@ -35,7 +35,7 @@ class UserModelTestCase(CitixenTestCase):
         self.assertEquals(self.app_user.user_permissions.count(), 1)
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename,
                                       self.headquarter.pk)
-        self.assertTrue(self.user.has_perm(perm_codename))
+        self.assertTrue(self.app_user.has_perm(perm_codename))
 
     def test_should_user_has_not_permission_in_another_headquarter_in_same_company(self):
         headquarter = HeadquarterFactory(company=self.company, created_by=uuid4())
