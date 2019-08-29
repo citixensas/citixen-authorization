@@ -20,7 +20,8 @@ class RemoteUserModelMixin(CitixenModel):
 class AppUser(RemoteUserModelMixin):
     """This model will be used in each app that implements the authorization package."""
 
-    pass
+    def __str__(self):
+        return 'Remote User: {uuid}'.format(uuid=self.uuid)
 
 
 class User(RemoteUserModelMixin,
