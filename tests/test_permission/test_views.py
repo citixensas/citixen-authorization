@@ -24,8 +24,9 @@ class GroupTemplateTestCase(CitixenAPITestCase):
         self._credentials = {'username': fake.user_name(), 'password': fake.password()}
         self.user = self.make_superuser(**self._credentials)
         self.set_client_token(self.user)
-        self.company = CompanyFactory(created_by=uuid4())
-        self.headquarter = HeadquarterFactory(company=self.company, created_by=uuid4())
+        self.appUser = AppUser.objects.create()
+        self.company = CompanyFactory(created_by=self.appUser)
+        self.headquarter = HeadquarterFactory(company=self.company, created_by=self.appUser)
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % EXAMPLE_TOKEN_VALID)
 
 
