@@ -34,7 +34,9 @@ class GetSingleGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self._add_user_permissions(['view_grouptemplate'], user=self.user, headquarter=self.headquarter)
+        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
+        self._add_user_permissions(['view_grouptemplate'], user=self.app_user,
+                                   headquarter=self.headquarter)
         self.groupTemplate = GroupTemplate.objects.create(
             name='TestGroupTemplate', headquarter=self.headquarter, parent=None)
 
@@ -64,7 +66,9 @@ class GetAllGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self._add_user_permissions(['view_grouptemplate'], user=self.user, headquarter=self.headquarter)
+        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
+        self._add_user_permissions(['view_grouptemplate'], user=self.app_user,
+                                   headquarter=self.headquarter)
         self.groupTemplate1 = GroupTemplate.objects.create(
             name='TestGroupTemplate1', headquarter=self.headquarter, parent=None)
         self.groupTemplate2 = GroupTemplate.objects.create(
@@ -102,7 +106,9 @@ class CreateGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self._add_user_permissions(['add_grouptemplate'], user=self.user, headquarter=self.headquarter)
+        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
+        self._add_user_permissions(['add_grouptemplate'], user=self.app_user,
+                                   headquarter=self.headquarter)
 
     def test_should_can_create_an_group_with_valid_payload_in_the_headquarter(self):
         valid_payload = {
