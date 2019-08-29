@@ -45,11 +45,17 @@ class CitixenAPITestCase(CitixenTestCase,
 
     @staticmethod
     def get_tokens_for_user(user):
-        refresh = RefreshToken.for_user(user)
-
+        token = RefreshToken.for_user(user)
+        token.payload.update({
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'username': user.username,
+            'uuid': str(user.uuid)
+        })
         return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
+            'refresh': str(token),
+            'access': str(token.access_token),
         }
 
     def set_client_token(self, user):
