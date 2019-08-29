@@ -111,8 +111,7 @@ class AbstractBaseUser(models.Model):
 
     @classmethod
     def normalize_username(cls, username):
-        return unicodedata.normalize('NFKC', username) if isinstance(username,
-                                                                     str) else username
+        return unicodedata.normalize('NFKC', username) if isinstance(username, str) else username
 
 
 class PermissionsMixin(models.Model):
@@ -200,7 +199,11 @@ class PermissionsMixin(models.Model):
         return _user_has_module_perms(self, app_label)
 
 
-class RemotePermissionsMixin(PermissionsMixin):
+class AppPermissionsMixin(PermissionsMixin):
+    """
+    Abstract permissions mixin class.
+    Fix clashed related name with groups and permissions.
+    """
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -209,17 +212,21 @@ class RemotePermissionsMixin(PermissionsMixin):
             'The groups this user belongs to. A user will get all permissions '
             'granted to each of their groups.'
         ),
-        related_name="remoteuser_set",
-        related_query_name="remoteuser",
+        related_name="appuser_set",
+        related_query_name="appuser",
     )
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name=_('user permissions'),
         blank=True,
         help_text=_('Specific permissions for this user.'),
-        related_name="remoteuser_set",
-        related_query_name="remoteuser",
+        related_name="appuser_set",
+        related_query_name="appuser",
+        through='users.UserPermission',
     )
+
+    class Meta(PermissionsMixin.Meta):
+        abstract = True
 
 
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
@@ -301,19 +308,30 @@ class RemoteUserModelMixin(models.Model):
         abstract = True
 
 
-class AppUser(CitixenModel, RemoteUserModelMixin):
+class AppUser(CitixenModel, AppPermissionsMixin, RemoteUserModelMixin):
     """
     This model will be used in each app that implements the authorization package.
     """
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        through='users.UserPermission',
-        verbose_name=_('Headquarter user permissions'),
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
     )
 
     def __str__(self):
         """Return remote unique idenfier."""
-        return self.uuid
+        return str(self.uuid)
+
+    @property
+    def is_anonymous(self):
+        """
+        Always return False. This is a way of comparing User objects to
+        anonymous users.
+        """
+        return False
 
 
 class User(AbstractUser, RemoteUserModelMixin):
@@ -333,4 +351,5 @@ class UserPermission(CitixenModel):
     headquarter = models.ForeignKey(Headquarter, on_delete=models.DO_NOTHING)
 
     def __str__(self):
+        """Return friendly description."""
         return f'{self.user.uuid} can {self.permission} in {self.headquarter}'

@@ -53,9 +53,7 @@ class UserModelTestCase(CitixenTestCase):
         headquarter = HeadquarterFactory(company=company, created_by=uuid4())
         self.assertEquals(self.app_user.user_permissions.count(), 0)
         perm_pks = Permission.objects.all().values_list('codename', flat=True)
-        self._add_user_permissions(perms=perm_pks, user=self.app_user,
-                                   headquarter=self.headquarter)
+        self._add_user_permissions(perms=perm_pks, user=self.app_user, headquarter=self.headquarter)
         perm = Permission.objects.first()
-        perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename,
-                                      headquarter.pk)
+        perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename, headquarter.pk)
         self.assertFalse(self.app_user.has_perm(perm_codename))
