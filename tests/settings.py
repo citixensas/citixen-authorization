@@ -31,7 +31,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
+    # "django.contrib.auth.backends.ModelBackend",
     "corexen.users.backends.AuthenticationBackend",
 ]
 

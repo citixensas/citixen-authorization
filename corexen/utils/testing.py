@@ -1,17 +1,14 @@
 """Citixen test utilities."""
 
-from corexen.users.models import UserPermission
 from django.contrib.auth.models import Permission
 from rest_framework_simplejwt.tokens import RefreshToken
+from test_plus import APITestCase, TestCase
 
-from test_plus import APITestCase
+from corexen.users.models import UserPermission
 
 
-class CitixenAPITestCase(APITestCase):
-    """Citixen api test case.
-
-    This class add custom helper methods.
-    """
+class CitixenTestCase(TestCase):
+    """Base citixen test case."""
 
     user = None
     headquarter = None
@@ -30,6 +27,17 @@ class CitixenAPITestCase(APITestCase):
         for perm in perms:
             self._add_user_permission(perm, user, headquarter)
 
+    def make_superuser(self, **kwargs):
+        user = self.make_user(**kwargs)
+        user.is_superuser = True
+        user.save()
+        return user
+
+
+class CitixenAPITestCase(CitixenTestCase,
+                         APITestCase):
+    """Citixen api test case."""
+
     @staticmethod
     def get_tokens_for_user(user):
         refresh = RefreshToken.for_user(user)
@@ -42,9 +50,3 @@ class CitixenAPITestCase(APITestCase):
     def set_client_token(self, user):
         self._access_token = self.get_tokens_for_user(user).get('access')
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % self._access_token)
-
-    def make_superuser(self, **kwargs):
-        user = self.make_user(**kwargs)
-        user.is_superuser = True
-        user.save()
-        return user
