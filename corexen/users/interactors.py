@@ -35,3 +35,9 @@ class UserInteractor(object):
     @classmethod
     def retrive_users_list(cls, queryset, uuid_list):
         pass
+
+    @classmethod
+    def convert_user_queryset_to_list_uuid(cls, queryset):
+        #   list(queryset.annotate(str=Cast('uuid', output_field=CharField())).values_list('str', flat=True))
+        list_uuid = list(queryset.values_list('uuid', flat=True))
+        return [str(uuid) for uuid in list_uuid]

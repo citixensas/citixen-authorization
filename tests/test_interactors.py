@@ -6,7 +6,7 @@ from faker import Faker
 from requests.exceptions import ConnectTimeout, ConnectionError
 
 from corexen.users.interactors import UserInteractor
-from corexen.users.models import AppUser
+from corexen.users.models import AppUser, User
 from corexen.utils.testing import CitixenAPITestCase
 
 fake = Faker()
@@ -110,5 +110,17 @@ class UserInteractorTest(CitixenAPITestCase):
         found, remote_response = UserInteractor.retrive_user_info(user=app_user)
         self.assertFalse(found)
         self.assertEquals(len(remote_response), 0)
+
+    def test_convert_queryset_to_list(self, m):
+        user1, app_user1 = self.make_remote_user(username='user1')
+        user2, app_user2 = self.make_remote_user(username='user2')
+        uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
+        self.assertEquals(len(uuid_list), 2)
+        self.assertIn(str(app_user1.uuid), uuid_list)
+        self.assertIn(str(app_user2.uuid), uuid_list)
+
+    def test_convert_empty_queryset_to_list(self, m):
+        uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
+        self.assertEquals(len(uuid_list), 0)
 
 
