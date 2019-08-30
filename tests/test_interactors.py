@@ -12,7 +12,7 @@ from corexen.utils.testing import CitixenAPITestCase
 fake = Faker()
 
 
-@requests_mock.Mocker()
+@requests_mock.Mocker(real_http=True)
 class UserInteractorTest(CitixenAPITestCase):
     def setUp(self):
         fake_name = fake.name()
@@ -85,3 +85,30 @@ class UserInteractorTest(CitixenAPITestCase):
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
+
+    def test_retrive_user_info(self, m):
+        user, app_user = self.make_remote_user(username=self.valid_data['username'])
+        user_id = str(app_user.uuid)
+        m.register_uri('GET', f'http://127.0.0.1:8000/api/authentication/users/{user_id}',
+                       json={
+                           'username': user.username,
+                           'email': user.email,
+                           'uuid': user_id
+                       }, status_code=200)
+        #   created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
+        found, remote_response = UserInteractor.retrive_user_info(user=app_user)
+        self.assertEquals(remote_response['username'], self.valid_data['username'])
+        self.assertEquals(remote_response['uuid'], str(app_user.uuid))
+
+    @override_settings(URL_USER_INFO="authentication/users_list/")
+    def test_retrive_user_info_fail_when_server_handle_404(self, m):
+        user, app_user = self.make_remote_user(username=self.valid_data['username'])
+        user_id = str(app_user.uuid)
+        m.register_uri('POST', f'http://127.0.0.1:8000/random_404/authentication/users/{user_id}',
+                       json={}, status_code=404)
+        created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
+        found, remote_response = UserInteractor.retrive_user_info(user=app_user)
+        self.assertFalse(found)
+        self.assertEquals(len(remote_response), 0)
+
+

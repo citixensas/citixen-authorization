@@ -18,15 +18,20 @@ class UserInteractor(object):
             'password': password,
             'password_confirmation': password_confirmation
         }
-        status_code, response = HTTPRequest.post(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_SIGNUP}', data=data)
+        status_code, response = HTTPRequest.post(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_SIGNUP}',
+                                                 data=data)
         if status_code == 201:
             uuid = response['uuid']
             user = AppUser.objects.create(uuid=uuid)
             created = True
         return created, user, response
 
-    def retrive_user_info(self, user):
-        pass
+    @classmethod
+    def retrive_user_info(cls, user):
+        uuid = str(user.uuid)
+        found, response = HTTPRequest.get(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_USER_INFO}{uuid}')
+        return found, response
 
-    def retrive_users_list(self, queryset, uuid_list):
+    @classmethod
+    def retrive_users_list(cls, queryset, uuid_list):
         pass
