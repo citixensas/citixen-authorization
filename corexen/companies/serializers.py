@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from corexen.companies import Company, Headquarter
+from corexen.companies.models import Company, Headquarter
 
 
 class CompanyModelSerializer(serializers.ModelSerializer):
