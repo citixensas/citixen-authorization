@@ -4,7 +4,7 @@ from django.contrib.auth.models import Permission
 from rest_framework_simplejwt.tokens import RefreshToken
 from test_plus import APITestCase, TestCase
 
-from corexen.users.models import UserPermission
+from corexen.users.models import UserPermission, AppUser
 
 
 class CitixenTestCase(TestCase):
@@ -33,6 +33,11 @@ class CitixenTestCase(TestCase):
         user.save()
         return user
 
+    def make_remote_user(self, **kwargs):
+        user = super().make_user(**kwargs)
+        app_user = AppUser.objects.create(uuid=user.uuid)
+        return user, app_user
+
 
 class CitixenAPITestCase(CitixenTestCase,
                          APITestCase):
@@ -40,11 +45,17 @@ class CitixenAPITestCase(CitixenTestCase,
 
     @staticmethod
     def get_tokens_for_user(user):
-        refresh = RefreshToken.for_user(user)
-
+        token = RefreshToken.for_user(user)
+        token.payload.update({
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email,
+            'username': user.username,
+            'uuid': str(user.uuid)
+        })
         return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
+            'refresh': str(token),
+            'access': str(token.access_token),
         }
 
     def set_client_token(self, user):

@@ -1,4 +1,4 @@
-from uuid import uuid4
+import uuid
 
 from django.contrib.auth.models import Permission
 from faker import Faker
@@ -13,8 +13,7 @@ fake = Faker()
 class UserModelTestCase(CitixenTestCase):
 
     def setUp(self):
-        self.user = self.make_user()
-        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
+        self.user, self.app_user = self.make_remote_user()
         self.company = CompanyFactory(created_by=self.app_user)
         self.headquarter = HeadquarterFactory(company=self.company, created_by=self.app_user)
 
@@ -57,3 +56,14 @@ class UserModelTestCase(CitixenTestCase):
         perm = Permission.objects.first()
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename, headquarter.pk)
         self.assertFalse(self.app_user.has_perm(perm_codename))
+
+
+class AppUserModelTestCase(CitixenTestCase):
+
+    def setUp(self):
+        self.user = self.make_user()
+        self.uuid = uuid.uuid1()
+        self.appUser = AppUser.objects.create(uuid=self.uuid)
+
+    def test_string_representation(self):
+        self.assertEquals(str(self.appUser), 'Remote User: {}'.format(str(self.uuid)))
