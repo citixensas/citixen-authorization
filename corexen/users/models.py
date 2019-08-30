@@ -321,6 +321,8 @@ class AppUser(CitixenModel, AppPermissionsMixin, RemoteUserModelMixin):
         ),
     )
 
+    REQUIRED_FIELDS = []
+
     def __str__(self):
         return 'Remote User: {uuid}'.format(uuid=self.uuid)
 
