@@ -4,7 +4,7 @@ from uuid import uuid4
 from django.contrib import auth
 from django.contrib.auth import password_validation
 from django.contrib.auth.hashers import make_password, check_password, is_password_usable
-from django.contrib.auth.models import UserManager, PermissionsMixin, \
+from django.contrib.auth.models import UserManager, \
     _user_has_module_perms, _user_has_perm, _user_get_all_permissions, Permission, Group
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail

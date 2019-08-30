@@ -32,8 +32,8 @@ class Headquarter(models.Model):
     phone = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=120)
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
-    city = models.CharField(max_length=30)
-    country = models.CharField(max_length=20)
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
 
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
