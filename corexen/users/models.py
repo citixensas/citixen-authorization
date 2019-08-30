@@ -325,7 +325,15 @@ class AppUser(CitixenModel, AppPermissionsMixin, RemoteUserModelMixin):
     USERNAME_FIELD = 'uuid'
 
     def __str__(self):
-        return 'Remote User: {uuid}'.format(uuid=self.uuid)
+        return 'AppUser: {uuid}'.format(uuid=self.uuid)
+
+    @property
+    def is_authenticated(self):
+        """
+        Always return True. This is a way to tell if the user has been
+        authenticated in templates.
+        """
+        return True
 
     @property
     def is_anonymous(self):
