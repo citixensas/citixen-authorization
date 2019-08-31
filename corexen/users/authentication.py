@@ -16,6 +16,7 @@ class CitixenAuthentication(JWTAuthentication):
             )
             app_user, created = AppUser.objects.get_or_create(uuid=data['uuid'])
             user.app_user = app_user
+            user.save()
             return user
         except KeyError:
             raise InvalidToken(_('Token contained no recognizable user identification'))
