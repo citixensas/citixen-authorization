@@ -66,4 +66,4 @@ class AppUserModelTestCase(CitixenTestCase):
         self.appUser = AppUser.objects.create(uuid=self.uuid)
 
     def test_string_representation(self):
-        self.assertEquals(str(self.appUser), 'Remote User: {}'.format(str(self.uuid)))
+        self.assertEquals(str(self.appUser), 'AppUser: {}'.format(str(self.uuid)))
