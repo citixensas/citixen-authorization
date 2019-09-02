@@ -7,7 +7,7 @@ class Company(models.Model):
     nit = models.CharField(max_length=50)
     name = models.CharField(max_length=120)
     email = models.EmailField(max_length=100)
-    country = models.CharField(max_length=30)  # This will be a relationship
+    country = models.CharField(max_length=50)  # This will be a relationship
     image_url = models.ImageField(upload_to='companies/images/')
 
     is_active = models.BooleanField(default=False)
@@ -29,7 +29,7 @@ class Headquarter(models.Model):
     image_url = models.ImageField(upload_to='headquarters/images/')
 
     email = models.EmailField(max_length=100, null=True)
-    phone = models.CharField(max_length=15, null=True)
+    phone = models.CharField(max_length=30, null=True)
     address = models.CharField(max_length=120)
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
     city = models.CharField(max_length=50)
