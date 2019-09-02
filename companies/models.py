@@ -36,6 +36,9 @@ class Headquarter(models.Model):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
 
+    recruitment = models.BooleanField(default=False)
+    recruitment_message = models.CharField(max_length=250, blank=True, null=True)
+
     created_by = models.UUIDField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
