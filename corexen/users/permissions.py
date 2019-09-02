@@ -35,7 +35,8 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
         return [perm % kwargs for perm in self.perms_map[method]]
 
     def has_permission(self, request, view):
-        profile = getattr(request.user.app_user, 'profile', None)
+        app_user = request.user.app_user
+        profile = getattr(app_user, 'profile', None)
 
         # Users without headquarter will be restricted with another logic.
         if profile and not profile.has_headquarter() or request.user.is_superuser:

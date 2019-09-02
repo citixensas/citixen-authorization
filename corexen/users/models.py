@@ -1,6 +1,7 @@
 import unicodedata
 from uuid import uuid4
 
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth import password_validation
 from django.contrib.auth.hashers import make_password, check_password, is_password_usable
@@ -308,7 +309,33 @@ class RemoteUserModelMixin(models.Model):
         abstract = True
 
 
-class AppUser(CitixenModel, AppPermissionsMixin, RemoteUserModelMixin):
+class _OldProfileSystemCapability:
+    """This funcionality was deprecated."""
+
+    _user_types = getattr(settings, 'APP_PROFILES', [])
+
+    @property
+    def profile(self):
+        """Return user profile."""
+        for user_type in self._user_types:
+            user_profile = getattr(self, user_type, None)
+            if user_profile is not None:
+                return user_profile
+        return None
+
+    def has_headquarter(self):
+        """Verify if user is associated to headquarter."""
+        return hasattr(self.profile, 'headquarter')
+
+    def has_company(self):
+        """Verify if user is associated to company."""
+        return hasattr(self.profile, 'company')
+
+
+class AppUser(CitixenModel,
+              AppPermissionsMixin,
+              RemoteUserModelMixin,
+              _OldProfileSystemCapability):
     """
     This model will be used in each app that implements the authorization package.
     """
