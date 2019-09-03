@@ -16,6 +16,7 @@ class CitixenAuthentication(JWTAuthentication):
             user.last_name = data.get('last_name', user.last_name)
             user.email = data.get('email', user.email)
             user.username = data.get('username', user.username)
+            user.is_superuser = data.get('is_superuser', user.is_superuser)
 
             # Get or create app user and assign user
             app_user, created = AppUser.objects.get_or_create(uuid=data['uuid'])

@@ -51,6 +51,7 @@ class CitixenAPITestCase(CitixenTestCase,
             'last_name': user.last_name,
             'email': user.email,
             'username': user.username,
+            'is_superuser': user.is_superuser,
             'uuid': str(user.uuid)
         })
         return {
