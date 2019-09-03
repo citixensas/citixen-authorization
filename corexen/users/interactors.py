@@ -33,8 +33,14 @@ class UserInteractor(object):
         return found, response
 
     @classmethod
-    def retrive_users_list(cls, queryset, uuid_list):
-        pass
+    def retrive_users_list(cls, queryset):
+        list_uuid = {
+            'uuid_list': cls.convert_user_queryset_to_list_uuid(queryset=queryset)
+        }
+        status_code, response = HTTPRequest.post(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_USER_INFO}',
+                                                 data=list_uuid)
+        return response
+
 
     @classmethod
     def convert_user_queryset_to_list_uuid(cls, queryset):
