@@ -5,7 +5,10 @@ _ORG_TYPES = ['headquarter', 'company']
 
 def _assign_company_and_headquarter_to_request(request):
     for org_type in _ORG_TYPES:
-        setattr(request, org_type, getattr(request.user.profile, org_type, None))
+        if hasattr(request.user, 'profile'):
+            setattr(request, org_type, getattr(request.user.profile, org_type, None))
+        else:
+            setattr(request, org_type, None)
 
 
 class UserContextOrganizationMiddleware(MiddlewareMixin):
