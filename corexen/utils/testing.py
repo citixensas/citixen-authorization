@@ -1,10 +1,13 @@
 """Citixen test utilities."""
 
 from django.contrib.auth.models import Permission
+from faker import Faker
 from rest_framework_simplejwt.tokens import RefreshToken
 from test_plus import APITestCase, TestCase
 
 from corexen.users.models import UserPermission, AppUser
+
+fake = Faker()
 
 
 class CitixenTestCase(TestCase):
@@ -37,6 +40,17 @@ class CitixenTestCase(TestCase):
         user = super().make_user(**kwargs)
         app_user = AppUser.objects.create(uuid=user.uuid)
         return user, app_user
+
+    def generate_factory_profile(self, profile, **kwargs):
+        """
+        Generic profile factory generator
+        :param profile: Profile factory
+        :param kwargs: Factory params
+        :return: Two values, first the profile and second the AppUser
+        """
+        user = self.make_user(username=fake.user_name())
+        profile = profile(uuid=user.uuid, **kwargs)
+        return profile, user
 
 
 class CitixenAPITestCase(CitixenTestCase,
