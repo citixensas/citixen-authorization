@@ -303,11 +303,12 @@ class RemoteUserModelMixin(models.Model):
     """
     This mixin expose unique idenfier.
     """
-    uuid = models.UUIDField(default=uuid4, unique=True)
+    uuid = models.UUIDField(default=uuid4, primary_key=True)
 
     class Meta:
         abstract = True
 
+    @property
     def get_app_user(self):
         """Extract user from this instance or return this current instance if is a AppUser."""
         if hasattr(self, 'app_user') and isinstance(self.app_user, AppUser):
