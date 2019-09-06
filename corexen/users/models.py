@@ -303,7 +303,7 @@ class RemoteUserModelMixin(models.Model):
     """
     This mixin expose unique idenfier.
     """
-    uuid = models.UUIDField(default=uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid4, unique=True)
 
     class Meta:
         abstract = True
