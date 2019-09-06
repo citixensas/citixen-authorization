@@ -21,7 +21,7 @@ class PostWithAuthView(PostView):
 
 class PostWithAppUser(PostWithAuthView):
     def post(self, request):
-        return Response(data=request.user.app_user.id, status=200)
+        return Response(data=request.user.id, status=200)
 
 
 urlpatterns = [
@@ -32,6 +32,9 @@ urlpatterns = [
 
 
 class TestMiddlewareTestCase(CitixenAPITestCase):
+    def setUp(self) -> None:
+        self.user = self.make_user()
+
     def test_can_access_request_post_without_login_required(self):
         response = self.client.post('/post', {'foo': 'bar'})
         self.response_200(response)
@@ -45,15 +48,13 @@ class TestMiddlewareTestCase(CitixenAPITestCase):
         self.response_401(response)
 
     def test_can_access_request_post_with_valid_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % EXAMPLE_TOKEN_VALID)
+        self.set_client_token(self.user)
         response = self.client.post('/post_login', {'foo': 'bar'}, format='json')
         self.response_200(response)
 
     def test_can_access_app_user_from_request(self):
-        token = CitixenAuthentication().get_validated_token(EXAMPLE_TOKEN_VALID)
-        app_user = AppUser.objects.create(uuid=token.payload['uuid'])
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % EXAMPLE_TOKEN_VALID)
+        self.set_client_token(self.user)
         response = self.client.post('/post_app_user', {'foo': 'bar'}, format='json')
         self.response_200(response)
-        self.assertEquals(response.data, app_user.pk)
+        self.assertEquals(response.data, self.user.pk)
         self.assertEquals(AppUser.objects.count(), 1)
