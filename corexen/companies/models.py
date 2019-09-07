@@ -12,7 +12,7 @@ class Company(models.Model):
 
     is_active = models.BooleanField(default=False)
 
-    created_by = models.ForeignKey('users.AppUser', on_delete=models.CASCADE, related_name='companies')
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='companies')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -41,7 +41,7 @@ class Headquarter(models.Model):
     recruitment = models.BooleanField(default=False)
     recruitment_message = models.CharField(max_length=250, blank=True, null=True)
 
-    created_by = models.ForeignKey('users.AppUser', on_delete=models.CASCADE, related_name='headquarters')
+    created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='headquarters')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

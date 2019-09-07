@@ -6,7 +6,7 @@ from django.contrib import auth
 from django.contrib.auth import password_validation
 from django.contrib.auth.hashers import make_password, check_password, is_password_usable
 from django.contrib.auth.models import UserManager, \
-    _user_has_module_perms, _user_has_perm, _user_get_all_permissions, Permission, Group
+    _user_has_module_perms, _user_has_perm, _user_get_all_permissions, Permission, Group, AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
@@ -213,16 +213,16 @@ class AppPermissionsMixin(PermissionsMixin):
             'The groups this user belongs to. A user will get all permissions '
             'granted to each of their groups.'
         ),
-        related_name="appuser_set",
-        related_query_name="appuser",
+        related_name="user_set",
+        related_query_name="user",
     )
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name=_('user permissions'),
         blank=True,
         help_text=_('Specific permissions for this user.'),
-        related_name="appuser_set",
-        related_query_name="appuser",
+        related_name="user_set",
+        related_query_name="user",
         through='users.UserPermission',
     )
 
@@ -230,7 +230,7 @@ class AppPermissionsMixin(PermissionsMixin):
         abstract = True
 
 
-class AbstractUser(AbstractBaseUser, PermissionsMixin):
+class AbstractUser2(AbstractBaseUser, PermissionsMixin):
     """
     An abstract base class implementing a fully featured User model with
     admin-compliant permissions.
@@ -339,10 +339,7 @@ class _OldProfileSystemCapability:
         return hasattr(self.profile, 'company')
 
 
-class AppUser(CitixenModel,
-              AppPermissionsMixin,
-              RemoteUserModelMixin,
-              _OldProfileSystemCapability):
+class AppUser(CitixenModel):
     """
     This model will be used in each app that implements the authorization package.
     """
@@ -356,7 +353,7 @@ class AppUser(CitixenModel,
     )
 
     def __str__(self):
-        return 'AppUser: {uuid}'.format(uuid=self.uuid)
+        return 'AppUser: {uuid}'
 
     @property
     def is_anonymous(self):
@@ -367,7 +364,9 @@ class AppUser(CitixenModel,
         return False
 
 
-class User(AbstractUser, RemoteUserModelMixin):
+class User(AbstractUser,
+           RemoteUserModelMixin,
+           AppPermissionsMixin):
     """
     This model contains user data in auth app and each citixen project.
     """
@@ -378,7 +377,7 @@ class UserPermission(CitixenModel):
     """
     This model contains each permission for user in specific headquarter.
     """
-    user = models.ForeignKey('users.AppUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('users.user', on_delete=models.CASCADE)
     permission = models.ForeignKey('auth.Permission', on_delete=models.DO_NOTHING)
 
     headquarter = models.ForeignKey(Headquarter, on_delete=models.DO_NOTHING)

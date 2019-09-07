@@ -24,18 +24,16 @@ class GroupTemplateTestCase(CitixenAPITestCase):
         self._credentials = {'username': fake.user_name(), 'password': fake.password()}
         self.user = self.make_superuser(**self._credentials)
         self.set_client_token(self.user)
-        self.appUser = AppUser.objects.create()
-        self.company = CompanyFactory(created_by=self.appUser)
-        self.headquarter = HeadquarterFactory(company=self.company, created_by=self.appUser)
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % EXAMPLE_TOKEN_VALID)
+        self.company = CompanyFactory(created_by=self.user)
+        self.headquarter = HeadquarterFactory(company=self.company, created_by=self.user)
 
 
 class GetSingleGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
-        self._add_user_permissions(['view_grouptemplate'], user=self.app_user,
+        self.app_user = AppUser.objects.create()
+        self._add_user_permissions(['view_grouptemplate'], user=self.user,
                                    headquarter=self.headquarter)
         self.groupTemplate = GroupTemplate.objects.create(
             name='TestGroupTemplate', headquarter=self.headquarter, parent=None)
@@ -66,8 +64,8 @@ class GetAllGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
-        self._add_user_permissions(['view_grouptemplate'], user=self.app_user,
+        self.app_user = AppUser.objects.create()
+        self._add_user_permissions(['view_grouptemplate'], user=self.user,
                                    headquarter=self.headquarter)
         self.groupTemplate1 = GroupTemplate.objects.create(
             name='TestGroupTemplate1', headquarter=self.headquarter, parent=None)
@@ -106,8 +104,7 @@ class CreateGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self.app_user = AppUser.objects.create(uuid=self.user.uuid)
-        self._add_user_permissions(['add_grouptemplate'], user=self.app_user,
+        self._add_user_permissions(['add_grouptemplate'], user=self.user,
                                    headquarter=self.headquarter)
 
     def test_should_can_create_an_group_with_valid_payload_in_the_headquarter(self):

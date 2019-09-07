@@ -33,7 +33,6 @@ class UserInteractorTest(CitixenAPITestCase):
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertTrue(created)
         self.assertEquals(AppUser.objects.count(), 1)
-        self.assertEquals(app_user.uuid, fake_uuid)
 
     def test_create_user_fail_without_valid_data(self, m):
         m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/', json={}, status_code=400)
@@ -88,7 +87,7 @@ class UserInteractorTest(CitixenAPITestCase):
 
     def test_retrive_user_info(self, m):
         user, app_user = self.make_remote_user(username=self.valid_data['username'])
-        user_id = str(app_user.uuid)
+        user_id = str(user.uuid)
         m.register_uri('GET', f'http://127.0.0.1:8000/api/authentication/users/{user_id}',
                        json={
                            'username': user.username,
@@ -96,18 +95,17 @@ class UserInteractorTest(CitixenAPITestCase):
                            'uuid': user_id
                        }, status_code=200)
         #   created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
-        found, remote_response = UserInteractor.retrive_user_info(user=app_user)
+        found, remote_response = UserInteractor.retrive_user_info(user=user)
         self.assertEquals(remote_response['username'], self.valid_data['username'])
-        self.assertEquals(remote_response['uuid'], str(app_user.uuid))
 
     @override_settings(URL_USER_INFO="authentication/users_list/")
     def test_retrive_user_info_fail_when_server_handle_404(self, m):
         user, app_user = self.make_remote_user(username=self.valid_data['username'])
-        user_id = str(app_user.uuid)
+        user_id = str(user.uuid)
         m.register_uri('POST', f'http://127.0.0.1:8000/random_404/authentication/users/{user_id}',
                        json={}, status_code=404)
         #   created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
-        found, remote_response = UserInteractor.retrive_user_info(user=app_user)
+        found, remote_response = UserInteractor.retrive_user_info(user=user)
         self.assertFalse(found)
         self.assertEquals(len(remote_response), 0)
 
@@ -116,8 +114,8 @@ class UserInteractorTest(CitixenAPITestCase):
         user2, app_user2 = self.make_remote_user(username='user2')
         uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
         self.assertEquals(len(uuid_list), 2)
-        self.assertIn(str(app_user1.uuid), uuid_list)
-        self.assertIn(str(app_user2.uuid), uuid_list)
+        self.assertIn(str(user1.uuid), uuid_list)
+        self.assertIn(str(user2.uuid), uuid_list)
 
     def test_convert_empty_queryset_to_list(self, m):
         uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
@@ -127,15 +125,15 @@ class UserInteractorTest(CitixenAPITestCase):
         user, app_user = self.make_remote_user(username=self.valid_data['username'])
         m.register_uri('POST', f'http://127.0.0.1:8000/api/authentication/users/',
                        json=[
-                           {'uuid': str(app_user.uuid)}
+                           {'uuid': str(user.uuid)}
                        ], status_code=200)
-        response = UserInteractor.retrive_users_list(queryset=AppUser.objects.all())
+        response = UserInteractor.retrive_users_list(queryset=User.objects.all())
         self.assertEquals(len(response), 1)
-        self.assertEquals(response[0]['uuid'], str(app_user.uuid))
+        self.assertEquals(response[0]['uuid'], str(user.uuid))
 
     def test_retrive_users_empty_list(self, m):
         m.register_uri('POST', f'http://127.0.0.1:8000/api/authentication/users/', json=[], status_code=200)
-        response = UserInteractor.retrive_users_list(queryset=AppUser.objects.none())
+        response = UserInteractor.retrive_users_list(queryset=User.objects.none())
         self.assertEquals(len(response), 0)
 
 

@@ -22,7 +22,7 @@ class UserInteractor(object):
                                                  data=data)
         if status_code == 201:
             uuid = response['uuid']
-            user = AppUser.objects.create(uuid=uuid)
+            user = AppUser.objects.create()
             created = True
         return created, user, response
 

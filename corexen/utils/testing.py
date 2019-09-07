@@ -38,7 +38,7 @@ class CitixenTestCase(TestCase):
 
     def make_remote_user(self, **kwargs):
         user = super().make_user(**kwargs)
-        app_user = AppUser.objects.create(uuid=user.uuid)
+        app_user = AppUser.objects.create()
         return user, app_user
 
     def generate_factory_profile(self, profile, **kwargs):
