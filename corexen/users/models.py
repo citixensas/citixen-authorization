@@ -233,7 +233,8 @@ class _OldProfileSystemCapability:
 
 class User(AbstractUser,
            RemoteUserModelMixin,
-           AppPermissionsMixin):
+           AppPermissionsMixin,
+           _OldProfileSystemCapability):
     """
     This model contains user data in auth app and each citixen project.
     """
