@@ -239,13 +239,6 @@ class RemoteUserModelMixin(models.Model):
     class Meta:
         abstract = True
 
-    @property
-    def get_app_user(self):
-        """Extract user from this instance or return this current instance if is a AppUser."""
-        if hasattr(self, 'app_user') and isinstance(self.app_user, AppUser):
-            return self.app_user
-        return self if isinstance(self, AppUser) else None
-
 
 class _OldProfileSystemCapability:
     """This funcionality was deprecated."""
@@ -268,10 +261,6 @@ class _OldProfileSystemCapability:
     def has_company(self):
         """Verify if user is associated to company."""
         return hasattr(self.profile, 'company')
-
-
-class AppUser(CitixenModel):
-    pass
 
 
 class User(AbstractUser,

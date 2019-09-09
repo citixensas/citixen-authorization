@@ -2,7 +2,6 @@ from faker import Faker
 from test_plus import TestCase
 
 from corexen.companies.models import Company
-from corexen.users.models import AppUser
 
 fake = Faker()
 

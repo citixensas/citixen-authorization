@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import Permission
 from faker import Faker
 
-from corexen.users.models import UserPermission, AppUser
+from corexen.users.models import UserPermission
 from corexen.utils.testing import CitixenTestCase
 from tests.test_companies.factories import CompanyFactory, HeadquarterFactory
 
@@ -56,14 +56,3 @@ class UserModelTestCase(CitixenTestCase):
         perm = Permission.objects.first()
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename, headquarter.pk)
         self.assertFalse(self.user.has_perm(perm_codename))
-
-
-class AppUserModelTestCase(CitixenTestCase):
-
-    def setUp(self):
-        self.user = self.make_user()
-        self.uuid = uuid.uuid1()
-        self.appUser = AppUser.objects.create()
-
-    def test_string_representation(self):
-        self.assertTrue(True)

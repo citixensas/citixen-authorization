@@ -17,7 +17,7 @@ class AuthenticationBackend(ModelBackend):
         if not hasattr(user_obj, perm_cache_name):
             perms = UserPermission.objects.all()
             if not user_obj.is_superuser:
-                perms = perms.filter(user=user_obj.get_app_user)
+                perms = perms.filter(user=user_obj)
             perms = perms.filter(headquarter__isnull=False).values_list(
                 'permission__content_type__app_label',
                 'permission__codename',

@@ -1,6 +1,5 @@
 from django.conf import settings
 
-from corexen.users.models import AppUser
 from corexen.utils.http import HTTPRequest
 
 
@@ -22,7 +21,6 @@ class UserInteractor(object):
                                                  data=data)
         if status_code == 201:
             uuid = response['uuid']
-            user = AppUser.objects.create()
             created = True
         return created, user, response
 

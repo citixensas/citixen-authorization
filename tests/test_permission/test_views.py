@@ -9,7 +9,6 @@ from rest_framework.reverse import reverse_lazy
 
 from corexen.permissions.models import GroupTemplate
 from corexen.permissions.serializers import GroupTemplateModelSerializer
-from corexen.users.models import AppUser
 from corexen.utils.testing import CitixenAPITestCase
 # Companies
 from tests.constants import EXAMPLE_TOKEN_VALID
@@ -32,7 +31,6 @@ class GetSingleGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self.app_user = AppUser.objects.create()
         self._add_user_permissions(['view_grouptemplate'], user=self.user,
                                    headquarter=self.headquarter)
         self.groupTemplate = GroupTemplate.objects.create(
@@ -64,7 +62,6 @@ class GetAllGroupTemplateTestCase(GroupTemplateTestCase):
 
     def setUp(self):
         super().setUp()
-        self.app_user = AppUser.objects.create()
         self._add_user_permissions(['view_grouptemplate'], user=self.user,
                                    headquarter=self.headquarter)
         self.groupTemplate1 = GroupTemplate.objects.create(

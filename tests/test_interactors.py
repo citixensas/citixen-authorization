@@ -6,7 +6,7 @@ from faker import Faker
 from requests.exceptions import ConnectTimeout, ConnectionError
 
 from corexen.users.interactors import UserInteractor
-from corexen.users.models import AppUser, User
+from corexen.users.models import User
 from corexen.utils.testing import CitixenAPITestCase
 
 fake = Faker()
@@ -32,7 +32,6 @@ class UserInteractorTest(CitixenAPITestCase):
                        json={'uuid': fake_uuid}, status_code=201)
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertTrue(created)
-        self.assertEquals(AppUser.objects.count(), 1)
 
     def test_create_user_fail_without_valid_data(self, m):
         m.register_uri('POST', 'http://127.0.0.1:8000/api/authentication/signup/', json={}, status_code=400)
@@ -86,7 +85,7 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertIsNone(app_user)
 
     def test_retrive_user_info(self, m):
-        user, app_user = self.make_remote_user(username=self.valid_data['username'])
+        user= self.make_user(username=self.valid_data['username'])
         user_id = str(user.uuid)
         m.register_uri('GET', f'http://127.0.0.1:8000/api/authentication/users/{user_id}',
                        json={
@@ -100,7 +99,7 @@ class UserInteractorTest(CitixenAPITestCase):
 
     @override_settings(URL_USER_INFO="authentication/users_list/")
     def test_retrive_user_info_fail_when_server_handle_404(self, m):
-        user, app_user = self.make_remote_user(username=self.valid_data['username'])
+        user = self.make_user(username=self.valid_data['username'])
         user_id = str(user.uuid)
         m.register_uri('POST', f'http://127.0.0.1:8000/random_404/authentication/users/{user_id}',
                        json={}, status_code=404)
@@ -110,8 +109,8 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertEquals(len(remote_response), 0)
 
     def test_convert_queryset_to_list(self, m):
-        user1, app_user1 = self.make_remote_user(username='user1')
-        user2, app_user2 = self.make_remote_user(username='user2')
+        user1 = self.make_user(username='user1')
+        user2 = self.make_user(username='user2')
         uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
         self.assertEquals(len(uuid_list), 2)
         self.assertIn(str(user1.uuid), uuid_list)
@@ -122,7 +121,7 @@ class UserInteractorTest(CitixenAPITestCase):
         self.assertEquals(len(uuid_list), 0)
 
     def test_retrive_users_list(self, m):
-        user, app_user = self.make_remote_user(username=self.valid_data['username'])
+        user = self.make_user(username=self.valid_data['username'])
         m.register_uri('POST', f'http://127.0.0.1:8000/api/authentication/users/',
                        json=[
                            {'uuid': str(user.uuid)}

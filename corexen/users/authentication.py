@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken
 
-from corexen.users.models import User, AppUser
+from corexen.users.models import User
 
 
 class CitixenAuthentication(JWTAuthentication):
@@ -17,10 +17,6 @@ class CitixenAuthentication(JWTAuthentication):
             user.email = data.get('email', user.email)
             user.username = data.get('username', user.username)
             user.is_superuser = data.get('is_superuser', user.is_superuser)
-
-            # Get or create app user and assign user
-            app_user, created = AppUser.objects.get_or_create()
-            user.app_user = app_user
             user.save()
 
             return user

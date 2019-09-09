@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from corexen.users.authentication import CitixenAuthentication
-from corexen.users.models import AppUser
 from corexen.utils.testing import CitixenAPITestCase
 from tests.constants import EXAMPLE_TOKEN_VALID, EXAMPLE_TOKEN_INVALID
 
@@ -57,4 +56,3 @@ class TestMiddlewareTestCase(CitixenAPITestCase):
         response = self.client.post('/post_app_user', {'foo': 'bar'}, format='json')
         self.response_200(response)
         self.assertEquals(response.data, self.user.pk)
-        self.assertEquals(AppUser.objects.count(), 1)
