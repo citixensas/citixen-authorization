@@ -48,6 +48,19 @@ class CitixenTestCase(TestCase):
         return profile, user
 
 
+class Login(object):
+
+    def __init__(self, test_case, user):
+        self.user = user
+        self.test_case = test_case
+
+    def __enter__(self):
+        self.test_case.set_client_token(user=self.user)
+
+    def __exit__(self, *args):
+        self.test_case.remove_client_token(user=self.user)
+
+
 class CitixenAPITestCase(CitixenTestCase,
                          APITestCase):
     """Citixen api test case."""
@@ -71,3 +84,10 @@ class CitixenAPITestCase(CitixenTestCase,
     def set_client_token(self, user):
         self._access_token = self.get_tokens_for_user(user).get('access')
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % self._access_token)
+
+    def remove_client_token(self, user):
+        self.client.credentials(HTTP_AUTHORIZATION='')
+
+    def login(self, user):
+        """ Login a user """
+        return Login(self, user)
