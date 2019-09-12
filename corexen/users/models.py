@@ -213,14 +213,21 @@ class _OldProfileSystemCapability:
 
     _user_types = getattr(settings, 'APP_PROFILES', [])
 
+    def __init__(self):
+        self.__user_profile = None
+
     @property
     def profile(self):
         """Return user profile."""
         for user_type in self._user_types:
-            user_profile = getattr(self, user_type, None)
-            if user_profile is not None:
-                return user_profile
-        return None
+            self.__user_profile = getattr(self, user_type, None)
+            if self.__user_profile is not None:
+                break
+        return self.__user_profile
+
+    @profile.setter
+    def profile(self, profile):
+        self.__user_profile = profile
 
     def has_headquarter(self):
         """Verify if user is associated to headquarter."""
