@@ -25,6 +25,8 @@ class Headquarter(models.Model):
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
+    description = models.TextField(null=True, blank=True)
+
     name = models.CharField(max_length=120)
     image_url = models.ImageField(upload_to='headquarters/images/')
 
