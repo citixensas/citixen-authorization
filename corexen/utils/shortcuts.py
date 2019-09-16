@@ -13,4 +13,4 @@ class DirectValueMetaClass(EnumMeta):
 class CitixenChoices(Enum, metaclass=DirectValueMetaClass):
     @classmethod
     def choices(cls):
-        return tuple((i.value[0], i.value[1]) for i in cls)
+        return tuple((i.value[0], i.value[1]) for i in cls if (bool(i.value[2]) if 2 < len(i.value) else True))
