@@ -78,10 +78,3 @@ class TestProfileMiddlewareTestCase(CitixenAPITestCase):
             url = reverse('view')
             response = self.get(url, extra=self.extra_header(1, 2))
             self.assertEqual(response.data, 'Object profile')
-
-    @staticmethod
-    def extra_header(app, headquarter):
-        return {
-            settings.CITIXEN['APPLICATION_IDENTIFIER']: app,
-            settings.CITIXEN['HEADQUARTER_IDENTIFIER']: headquarter,
-        }

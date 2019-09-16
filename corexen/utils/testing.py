@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from test_plus import APITestCase, TestCase
 
 from corexen.users.models import UserPermission
+from tests import settings
 
 fake = Faker()
 
@@ -91,3 +92,10 @@ class CitixenAPITestCase(CitixenTestCase,
     def login(self, user):
         """ Login a user """
         return Login(self, user)
+
+    @staticmethod
+    def extra_header(app, headquarter):
+        return {
+            settings.CITIXEN['APPLICATION_IDENTIFIER']: app,
+            settings.CITIXEN['HEADQUARTER_IDENTIFIER']: headquarter,
+        }
