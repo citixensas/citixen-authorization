@@ -197,6 +197,12 @@ class AppPermissionsMixin(PermissionsMixin):
     class Meta(PermissionsMixin.Meta):
         abstract = True
 
+    @property
+    def active_headquarters(self):
+        """Return headquarter where the user has permissions."""
+        headquarters_pks = set(UserPermission.objects.filter(user=self).values_list('headquarter_id', flat=True))
+        return Headquarter.objects.filter(id__in=headquarters_pks)
+
 
 class RemoteUserModelMixin(models.Model):
     """
