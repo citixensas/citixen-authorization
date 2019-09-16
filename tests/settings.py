@@ -39,6 +39,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     "corexen.users.middleware.JWTAuthenticationMiddleware",
+    "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
 ]
 ADMIN_URL = "admin/"
 
@@ -57,3 +58,10 @@ REST_FRAMEWORK = {
 BASE_AUTHENTICATION_URL_API = 'http://127.0.0.1:8000/api/'
 URL_SIGNUP = 'authentication/signup/'
 URL_USER_INFO = 'authentication/users/'
+
+__header_format = lambda x: f'HTTP_{x}'.upper().replace('-', '_')
+CITIXEN = {
+    'HEADQUARTER_IDENTIFIER': __header_format('Headquarter-id'),
+    'APPLICATION_IDENTIFIER': __header_format('App-id'),
+    'PROFILE_FINDER': 'tests.test_users.test_middleware.test_profile.ProfileFinder'
+}

@@ -1,3 +1,5 @@
+from importlib import import_module
+
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
@@ -37,3 +39,33 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
         admin_url = '/%s' % settings.ADMIN_URL
         if not request.path.startswith(admin_url):
             request.user = SimpleLazyObject(lambda: get_user_jwt(request))
+
+
+class CitixenProfileMiddleware(MiddlewareMixin):
+    """ Middleware for set profile """
+    def process_request(self, request):
+        admin_url = '/%s' % settings.ADMIN_URL
+        if not request.path.startswith(admin_url):
+            configs = getattr(settings, 'CITIXEN', {})
+            self.__check_keys(configs)
+            profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
+            request.user.profile = profile_finder(
+                request.user,
+                request.META.get(configs['APPLICATION_IDENTIFIER'], None),
+                request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
+            ).get()
+            pass
+
+    @staticmethod
+    def __check_keys(configs):
+        if not {'HEADQUARTER_IDENTIFIER', 'APPLICATION_IDENTIFIER', 'PROFILE_FINDER'} <= set(configs):
+            raise KeyError('Some keywords for profile middleware were not provided')
+
+    @staticmethod
+    def __import_finder(uri):
+        try:
+            path, class_name = uri.rsplit('.', 1)
+            module = import_module(path)
+            return getattr(module, class_name)
+        except Exception:
+            raise ValueError('Profile finder for middleware not configured correctly')
