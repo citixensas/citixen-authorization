@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from django.db import models
 
 
@@ -12,6 +14,8 @@ class Company(models.Model):
 
     is_active = models.BooleanField(default=False)
 
+    uuid = models.UUIDField(default=uuid4, unique=True)
+
     created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='companies')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -24,6 +28,8 @@ class Headquarter(models.Model):
     """Headquarter model."""
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    description = models.TextField(null=True, blank=True)
 
     name = models.CharField(max_length=120)
     image_url = models.ImageField(upload_to='headquarters/images/')
@@ -40,6 +46,8 @@ class Headquarter(models.Model):
 
     recruitment = models.BooleanField(default=False)
     recruitment_message = models.CharField(max_length=250, blank=True, null=True)
+
+    uuid = models.UUIDField(default=uuid4, unique=True)
 
     created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='headquarters')
     created_at = models.DateTimeField(auto_now_add=True)
