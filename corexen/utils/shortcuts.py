@@ -1,6 +1,13 @@
 from enum import Enum, EnumMeta
 
 
+def get_or_none(model, **kwargs):
+    try:
+        return model.objects.get(**kwargs)
+    except model.DoesNotExist:
+        return None
+
+
 class DirectValueMetaClass(EnumMeta):
 
     def __getattribute__(cls, name):
