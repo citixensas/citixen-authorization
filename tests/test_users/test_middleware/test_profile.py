@@ -1,6 +1,8 @@
 import sys
 from importlib import import_module
 
+from django.core.exceptions import PermissionDenied, ImproperlyConfigured
+
 from corexen.users.middleware import CitixenProfileMiddleware
 from corexen.users.profiles import BaseProfileFinder
 from corexen.utils.testing import CitixenAPITestCase
@@ -19,7 +21,7 @@ class ProfileFinder(BaseProfileFinder):
         if self.app and self.headquarter:
             profile = 'Object profile'
         else:
-            profile = 'None profile'
+            profile = None
         return profile
 
 
@@ -45,9 +47,9 @@ class TestProfileMiddlewareTestCase(CitixenAPITestCase):
     @override_settings(CITIXEN={})
     def test_assert_except_when_keywords_config_is_invalid(self):
         with self.login(self.user):
-            with self.assertRaises(KeyError) as e:
+            with self.assertRaises(ImproperlyConfigured) as e:
                 self.client.get(reverse('view'), format='json')
-            self.assertEqual(str(e.exception), "'Some keywords for profile middleware were not provided'")
+            self.assertEqual(str(e.exception), 'Some keywords for profile middleware were not provided')
 
     @override_settings(CITIXEN={
         'HEADQUARTER_IDENTIFIER': '',
@@ -56,14 +58,9 @@ class TestProfileMiddlewareTestCase(CitixenAPITestCase):
     })
     def test_assert_except_when_profile_finder_is_invalid(self):
         with self.login(self.user):
-            with self.assertRaises(ValueError) as e:
+            with self.assertRaises(ImproperlyConfigured) as e:
                 self.client.get(reverse('view'), format='json')
             self.assertEqual(str(e.exception), 'Profile finder for middleware not configured correctly')
-
-    def test_without_extra_headers(self):
-        with self.login(self.user):
-            response = self.client.get(reverse('view'), format='json')
-            self.assertEqual(response.data, 'None profile')
 
     def test_without_process_view(self):
         with self.login(self.user):
@@ -78,3 +75,8 @@ class TestProfileMiddlewareTestCase(CitixenAPITestCase):
             url = reverse('view')
             response = self.get(url, extra=self.extra_header(1, 2))
             self.assertEqual(response.data, 'Object profile')
+
+    def test_assert_except_when_profile_is_invalid(self):
+        with self.login(self.user):
+            response = self.get(reverse('view'), extra=self.extra_header(None, None))
+            self.response_403(response)

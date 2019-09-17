@@ -1,6 +1,7 @@
 from importlib import import_module
 
 from django.conf import settings
+from django.core.exceptions import PermissionDenied, ImproperlyConfigured
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
 from django.contrib.auth.models import AnonymousUser
@@ -49,17 +50,19 @@ class CitixenProfileMiddleware(MiddlewareMixin):
             configs = getattr(settings, 'CITIXEN', {})
             self.__check_keys(configs)
             profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
-            request.user.profile = profile_finder(
+            profile = profile_finder(
                 request.user,
                 request.META.get(configs['APPLICATION_IDENTIFIER'], None),
                 request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
             ).get()
-            pass
+            if not profile:
+                raise PermissionDenied
+            request.user.profile = profile
 
     @staticmethod
     def __check_keys(configs):
         if not {'HEADQUARTER_IDENTIFIER', 'APPLICATION_IDENTIFIER', 'PROFILE_FINDER'} <= set(configs):
-            raise KeyError('Some keywords for profile middleware were not provided')
+            raise ImproperlyConfigured('Some keywords for profile middleware were not provided')
 
     @staticmethod
     def __import_finder(uri):
@@ -68,4 +71,4 @@ class CitixenProfileMiddleware(MiddlewareMixin):
             module = import_module(path)
             return getattr(module, class_name)
         except Exception:
-            raise ValueError('Profile finder for middleware not configured correctly')
+            raise ImproperlyConfigured('Profile finder for middleware not configured correctly')
