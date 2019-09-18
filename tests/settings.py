@@ -31,7 +31,6 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    # "django.contrib.auth.backends.ModelBackend",
     "corexen.users.backends.AuthenticationBackend",
 ]
 
@@ -49,7 +48,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'corexen.users.authentication.CitixenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     # Pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
