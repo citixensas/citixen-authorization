@@ -39,7 +39,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     "corexen.users.middleware.JWTAuthenticationMiddleware",
-    "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
+    #   "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
 ]
 ADMIN_URL = "admin/"
 
