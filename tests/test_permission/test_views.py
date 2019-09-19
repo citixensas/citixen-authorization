@@ -1,5 +1,4 @@
 # Python
-from uuid import uuid4
 
 # Citixen
 from django.contrib.auth.models import Permission
@@ -11,7 +10,6 @@ from corexen.permissions.models import GroupTemplate
 from corexen.permissions.serializers import GroupTemplateModelSerializer
 from corexen.utils.testing import CitixenAPITestCase
 # Companies
-from tests.constants import EXAMPLE_TOKEN_VALID
 from tests.test_companies.factories import CompanyFactory, HeadquarterFactory
 from tests.test_permission.factories import GroupTemplateFactory
 
