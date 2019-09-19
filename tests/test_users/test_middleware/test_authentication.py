@@ -2,11 +2,9 @@ from django.conf.urls import url
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 
-from corexen.users.authentication import CitixenAuthentication
 from corexen.utils.testing import CitixenAPITestCase
-from tests.constants import EXAMPLE_TOKEN_VALID, EXAMPLE_TOKEN_INVALID
+from tests.constants import EXAMPLE_TOKEN_INVALID
 
 
 class PostView(APIView):
