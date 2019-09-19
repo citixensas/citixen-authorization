@@ -38,7 +38,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     "corexen.users.middleware.JWTAuthenticationMiddleware",
-    "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
+    #   "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
 ]
 ADMIN_URL = "admin/"
 
@@ -46,8 +46,6 @@ ADMIN_URL = "admin/"
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     # Pagination
@@ -55,7 +53,18 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100
 }
 
+
+# JWT
+# ------------------------------------------------------------------------------
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'uuid',
+    'USER_ID_CLAIM': 'user_id',
+}
+
 # Corexen
+# ------------------------------------------------------------------------------
+
 BASE_AUTHENTICATION_URL_API = 'http://127.0.0.1:8000/api/'
 URL_SIGNUP = 'authentication/signup/'
 URL_USER_INFO = 'authentication/users/'
