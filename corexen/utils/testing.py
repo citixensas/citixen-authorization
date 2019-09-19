@@ -68,19 +68,12 @@ class CitixenAPITestCase(CitixenTestCase,
 
     @staticmethod
     def get_tokens_for_user(user):
-        token = RefreshToken.for_user(user)
-        token.payload.update({
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email,
-            'username': user.username,
-            'is_superuser': user.is_superuser,
-            'uuid': str(user.uuid)
-        })
-        return {
-            'refresh': str(token),
-            'access': str(token.access_token),
+        refresh = RefreshToken.for_user(user)
+        tokens = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
         }
+        return tokens
 
     def set_client_token(self, user):
         self._access_token = self.get_tokens_for_user(user).get('access')

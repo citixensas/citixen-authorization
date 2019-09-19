@@ -31,7 +31,6 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    # "django.contrib.auth.backends.ModelBackend",
     "corexen.users.backends.AuthenticationBackend",
 ]
 
@@ -47,16 +46,25 @@ ADMIN_URL = "admin/"
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'corexen.users.authentication.CitixenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     # Pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100
 }
 
+
+# JWT
+# ------------------------------------------------------------------------------
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'uuid',
+    'USER_ID_CLAIM': 'user_id',
+}
+
 # Corexen
+# ------------------------------------------------------------------------------
+
 BASE_AUTHENTICATION_URL_API = 'http://127.0.0.1:8000/api/'
 URL_SIGNUP = 'authentication/signup/'
 URL_USER_INFO = 'authentication/users/'

@@ -1,14 +1,12 @@
 from importlib import import_module
 
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied, ImproperlyConfigured
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
-from django.contrib.auth.models import AnonymousUser
-
 from rest_framework.request import Request
-
-from corexen.users.authentication import CitixenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 def get_user_jwt(request):
@@ -24,9 +22,9 @@ def get_user_jwt(request):
     """
     user = None
     try:
-        user_jwt = CitixenAuthentication().authenticate(Request(request))
+        user_jwt = JWTAuthentication().authenticate(Request(request))
         if user_jwt is not None:
-            # store the first part from the tuple (user, obj)
+            # store the first part from the tuple (user, ob j)
             user = user_jwt[0]
     except:
         pass
