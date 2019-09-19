@@ -38,7 +38,13 @@ urls = [
 urlpatterns = import_module(settings.ROOT_URLCONF).urlpatterns + urls
 
 
-@override_settings(ROOT_URLCONF=__name__)
+@override_settings(
+    ROOT_URLCONF=__name__,
+    MIDDLEWARE=[
+        "corexen.users.middleware.JWTAuthenticationMiddleware",
+        "tests.test_users.test_middleware.test_profile.CitixenProfileMiddleware",
+    ]
+)
 class TestProfileMiddlewareTestCase(CitixenAPITestCase):
     def setUp(self) -> None:
         self.user = self.make_user()
