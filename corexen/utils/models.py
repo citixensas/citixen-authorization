@@ -14,3 +14,8 @@ class CitixenModel(models.Model):
 
         abstract = True
         ordering = ('-created_at', '-updated_at')
+
+    def update(self, *args, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        self.save()
