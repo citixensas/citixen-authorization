@@ -27,7 +27,7 @@ class CitixenTestCase(TestCase):
     def _add_user_permissions(self, perms, user=None, headquarter=None):
         """Add permissions to user from perm codename list."""
         user = user or self.user
-        headquarter = self.headquarter or headquarter
+        headquarter = headquarter or self.headquarter
         for perm in perms:
             self._add_user_permission(perm, user, headquarter)
 
