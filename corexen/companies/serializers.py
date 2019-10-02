@@ -6,7 +6,7 @@ from corexen.companies.models import Company, Headquarter
 class CompanyModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('nit', 'name', 'email', 'country', 'is_active',)
+        fields = ('uuid', 'nit', 'name', 'email', 'country', 'is_active',)
         read_only_fields = ('is_active',)
 
 
@@ -19,7 +19,7 @@ class CompanyListModelSerializer(serializers.ModelSerializer):
 class HeadquarterModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Headquarter
-        fields = ('company', 'name', 'address', 'neighborhood', 'country', 'city', 'email', 'phone', 'is_active',)
+        fields = ('uuid', 'company', 'name', 'address', 'neighborhood', 'country', 'city', 'email', 'phone', 'is_active',)
         read_only_fields = ('is_active',)
 
     def create(self, validated_data):
