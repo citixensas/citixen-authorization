@@ -18,7 +18,7 @@ class PostWithAuthView(PostView):
 
 class PostWithAppUser(PostWithAuthView):
     def post(self, request):
-        return Response(data=request.user.id, status=200)
+        return Response(data=request.user.pk, status=200)
 
 
 urlpatterns = [
