@@ -17,8 +17,10 @@ class UserInteractor(object):
             'password': password,
             'password_confirmation': password_confirmation
         }
-        status_code, response = HTTPRequest.post(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_SIGNUP}',
-                                                 data=data)
+        status_code, response = HTTPRequest.post(
+            url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_SIGNUP}',
+            data=data
+        )
         if status_code == 201:
             uuid = response['uuid']
             created = True
@@ -38,7 +40,6 @@ class UserInteractor(object):
         status_code, response = HTTPRequest.post(url=f'{settings.BASE_AUTHENTICATION_URL_API}{settings.URL_USER_INFO}',
                                                  data=list_uuid)
         return response
-
 
     @classmethod
     def convert_user_queryset_to_list_uuid(cls, queryset):

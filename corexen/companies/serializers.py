@@ -13,13 +13,17 @@ class CompanyModelSerializer(serializers.ModelSerializer):
 class CompanyListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('pk', 'name',)
+        fields = ('uuid', 'name',)
 
 
 class HeadquarterModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Headquarter
-        fields = ('uuid', 'company', 'name', 'address', 'neighborhood', 'country', 'city', 'email', 'phone', 'is_active',)
+        fields = (
+            'uuid', 'company', 'name', 'address',
+            'neighborhood', 'country', 'city', 'email',
+            'phone', 'is_active',
+        )
         read_only_fields = ('is_active',)
 
     def create(self, validated_data):

@@ -8,7 +8,6 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.utils.crypto import salted_hmac
 from django.utils.translation import gettext_lazy as _
 
 from corexen.companies.models import Headquarter
@@ -200,8 +199,9 @@ class AppPermissionsMixin(PermissionsMixin):
     @property
     def active_headquarters(self):
         """Return headquarter where the user has permissions."""
-        headquarters_pks = set(UserPermission.objects.filter(user=self).values_list('headquarter_id', flat=True))
-        return Headquarter.objects.filter(id__in=headquarters_pks)
+        headquarters_pks = set(UserPermission.objects.filter(user=self)
+                               .values_list('headquarter_pk', flat=True))
+        return Headquarter.objects.filter(pk__in=headquarters_pks)
 
 
 class RemoteUserModelMixin(models.Model):

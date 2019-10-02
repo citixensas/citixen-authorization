@@ -9,10 +9,11 @@ class PermissionInline(admin.AllValuesFieldListFilter):
     model = GroupTemplatePermission
     extra = 3
 
+
 @admin.register(GroupTemplate)
 class GroupAdmin(admin.ModelAdmin):
 
-    list_display = ('id', 'name', 'parent', 'headquarter')
+    list_display = ('pk', 'name', 'parent', 'headquarter')
     list_filter = ('parent', 'headquarter')
 
 

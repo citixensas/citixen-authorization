@@ -13,14 +13,14 @@ class GroupTemplateModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = GroupTemplate
         fields = [
-            'id',
+            'pk',
             'name',
             'parent',
             'group_permissions',
             'headquarter',
             'groups'
         ]
-        read_only_fields = ['id']
+        read_only_fields = ['pk']
 
     def validate(self, attrs):
         if self.initial_data.get('group_permissions', None):

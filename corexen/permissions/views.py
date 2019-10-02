@@ -1,20 +1,19 @@
 """Group view"""
 
 from rest_framework import status
-from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, mixins
 
-from corexen.permissions.serializers import GroupTemplateModelSerializer
 from corexen.permissions.models import GroupTemplate
+from corexen.permissions.serializers import GroupTemplateModelSerializer
 
 
 class GroupTemplateViewSet(mixins.ListModelMixin,
-                            mixins.CreateModelMixin,
-                            mixins.UpdateModelMixin,
-                            mixins.DestroyModelMixin,
-                            mixins.RetrieveModelMixin,
-                            GenericViewSet):
+                           mixins.CreateModelMixin,
+                           mixins.UpdateModelMixin,
+                           mixins.DestroyModelMixin,
+                           mixins.RetrieveModelMixin,
+                           GenericViewSet):
     queryset = GroupTemplate.objects.all()
     serializer_class = GroupTemplateModelSerializer
 

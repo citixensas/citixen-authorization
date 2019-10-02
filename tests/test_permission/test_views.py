@@ -88,8 +88,8 @@ class GetAllGroupTemplateTestCase(GroupTemplateTestCase):
         serializer = GroupTemplateModelSerializer(groups, many=True)
         self.assertEqual(response.data['results'], serializer.data)
         self.assertEqual(len(response.data['results']), 2)
-        group_template_1 = [result for result in response.data['results'] if result['id'] == self.groupTemplate1.pk][0]
-        group_template_2 = [result for result in response.data['results'] if result['id'] == self.groupTemplate2.pk][0]
+        group_template_1 = [result for result in response.data['results'] if result['pk'] == self.groupTemplate1.pk][0]
+        group_template_2 = [result for result in response.data['results'] if result['pk'] == self.groupTemplate2.pk][0]
         self.assertEqual(len(group_template_1['groups']), len(groups1))
         self.assertEqual(len(group_template_2['groups']), len(groups2))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
