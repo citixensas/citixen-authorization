@@ -213,40 +213,9 @@ class RemoteUserModelMixin(models.Model):
         abstract = True
 
 
-class _OldProfileSystemCapability:
-    """This funcionality was deprecated."""
-
-    _user_types = getattr(settings, 'APP_PROFILES', [])
-
-    def __init__(self):
-        self.__user_profile = None
-
-    @property
-    def profile(self):
-        """Return user profile."""
-        for user_type in self._user_types:
-            self.__user_profile = getattr(self, user_type, None)
-            if self.__user_profile is not None:
-                break
-        return self.__user_profile
-
-    @profile.setter
-    def profile(self, profile):
-        self.__user_profile = profile
-
-    def has_headquarter(self):
-        """Verify if user is associated to headquarter."""
-        return hasattr(self.profile, 'headquarter')
-
-    def has_company(self):
-        """Verify if user is associated to company."""
-        return hasattr(self.profile, 'company')
-
-
 class User(AbstractUser,
            RemoteUserModelMixin,
-           AppPermissionsMixin,
-           _OldProfileSystemCapability):
+           AppPermissionsMixin):
     """
     This model contains user data in auth app and each citixen project.
     """
