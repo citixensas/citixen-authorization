@@ -45,17 +45,20 @@ class CitixenProfileMiddleware(MiddlewareMixin):
     def process_request(self, request):
         admin_url = '/%s' % settings.ADMIN_URL
         if not request.path.startswith(admin_url):
-            configs = getattr(settings, 'CITIXEN', {})
-            self.__check_keys(configs)
-            profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
-            profile = profile_finder(
-                request.user,
-                request.META.get(configs['APPLICATION_IDENTIFIER'], None),
-                request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
-            ).get()
-            if not profile:
-                raise PermissionDenied
-            request.user.profile = profile
+            if request.user.is_authenticated:
+                configs = getattr(settings, 'CITIXEN', {})
+                self.__check_keys(configs)
+                profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
+                profile = profile_finder(
+                    request.user,
+                    request.META.get(configs['APPLICATION_IDENTIFIER'], None),
+                    request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
+                ).get()
+                if not profile:
+                    raise PermissionDenied
+                setattr(request.user, 'profile', profile)
+            else:
+                setattr(request.user, 'profile', None)
 
     @staticmethod
     def __check_keys(configs):
