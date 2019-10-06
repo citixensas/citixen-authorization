@@ -222,16 +222,16 @@ class User(AbstractUser,
     def __init__(self): 
           self._profile = 0
        
-     # using property decorator 
-     # a getter function 
-     @property
-     def profile(self): 
-         return self._profile 
-       
-     # a setter function 
-     @profile.setter 
-     def profile(self, value): 
-         self._profile = value
+    # using property decorator 
+    # a getter function 
+    @property
+    def profile(self): 
+        return self._profile 
+      
+    # a setter function 
+    @profile.setter 
+    def profile(self, value): 
+        self._profile = value
             
     objects = UserManager()
 
