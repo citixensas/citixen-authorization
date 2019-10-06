@@ -41,7 +41,6 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
                 'abstract': False,
             },
-            bases=(models.Model, corexen.users.models._OldProfileSystemCapability),
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
             ],
