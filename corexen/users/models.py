@@ -219,20 +219,19 @@ class User(AbstractUser,
     """
     This model contains user data in auth app and each citixen project.
     """
-    def __init__(self): 
-          self._profile = 0
-       
-    # using property decorator 
-    # a getter function 
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._profile = None
+
     @property
-    def profile(self): 
-        return self._profile 
-      
-    # a setter function 
-    @profile.setter 
-    def profile(self, value): 
+    def profile(self):
+        return self._profile
+
+    @profile.setter
+    def profile(self, value):
         self._profile = value
-            
+
     objects = UserManager()
 
 
