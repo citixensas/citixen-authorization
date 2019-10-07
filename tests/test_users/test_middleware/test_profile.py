@@ -29,7 +29,7 @@ class View(APIView):
     permission_classes = IsAuthenticated,
 
     def get(self, request):
-        return Response(data=request.user.profile, status=200)
+        return Response(data=request.profile, status=200)
 
 
 urls = [
@@ -73,8 +73,8 @@ class TestProfileMiddlewareTestCase(CitixenAPITestCase):
             request = self.factory.get(reverse('view'), **self.extra_header(1, 2))
             SessionMiddleware().process_request(request)
             AuthenticationMiddleware().process_request(request)
-            CitixenProfileMiddleware().process_request(request)
-            self.assertEqual(request.user.profile, 'Object profile')
+            CitixenProfileMiddleware().process_view(request, None)
+            self.assertEqual(request.profile, None)
 
     def test_with_extra_headers(self):
         with self.login(self.user):
