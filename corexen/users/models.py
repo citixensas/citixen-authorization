@@ -1,6 +1,5 @@
 from uuid import uuid4
 
-from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.models import UserManager, \
     _user_has_module_perms, _user_has_perm, _user_get_all_permissions, Permission, Group, AbstractBaseUser
@@ -195,12 +194,6 @@ class AppPermissionsMixin(PermissionsMixin):
 
     class Meta(PermissionsMixin.Meta):
         abstract = True
-
-    @property
-    def active_headquarters(self):
-        """Return headquarter where the user has permissions."""
-        headquarters_pks = set(UserPermission.objects.filter(user=self).values_list('headquarter_id', flat=True))
-        return Headquarter.objects.filter(pk__in=headquarters_pks)
 
 
 class RemoteUserModelMixin(models.Model):

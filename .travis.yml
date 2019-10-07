@@ -1,21 +1,1 @@
-# Config file for automatic testing at travis-ci.org
-
-language: python
-
-python:
-  - "3.6"
-
-env:
-  - TOX_ENV=py36-django-20
-
-matrix:
-  fast_finish: true
-
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -r requirements_test.txt
-
-# command to run tests using coverage, e.g. python setup.py test
-script: tox -e $TOX_ENV
-
-after_success:
-  - codecov -e TOX_ENV
+dist: xeniallanguage: pythonmatrix:  include:    - python: 3.6      env: TOX_ENV=py36-django20    - python: 3.6      env: TOX_ENV=py36-django21    - python: 3.6      env: TOX_ENV=py36-django22    - python: 3.6      env: TOX_ENV=py36-django30    - python: 3.7      env: TOX_ENV=py37-django20    - python: 3.7      env: TOX_ENV=py37-django21    - python: 3.7      env: TOX_ENV=py37-django22    - python: 3.7      env: TOX_ENV=py37-django30    - python: 3.8-dev      env: TOX_ENV=py38-django20    - python: 3.8-dev      env: TOX_ENV=py38-django21    - python: 3.8-dev      env: TOX_ENV=py38-django22    - python: 3.8-dev      env: TOX_ENV=py38-django30install: - pip install toxscript: - tox -e $TOX_ENV
