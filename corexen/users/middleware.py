@@ -42,23 +42,27 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 
 class CitixenProfileMiddleware(MiddlewareMixin):
     """ Middleware for set profile """
-    def process_request(self, request):
+
+    def process_view(self, request, view_func, *view_args, **view_kwargs):
         admin_url = '/%s' % settings.ADMIN_URL
         if not request.path.startswith(admin_url):
-            if request.user.is_authenticated:
+            user = request.user
+            if user.is_authenticated:
                 configs = getattr(settings, 'CITIXEN', {})
                 self.__check_keys(configs)
+                exclude_headquarter_validation = getattr(view_func, 'exclude_headquarter_validation', False)
                 profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
                 profile = profile_finder(
-                    request.user,
-                    request.META.get(configs['APPLICATION_IDENTIFIER'], None),
-                    request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
+                    user=user,
+                    app_id=request.META.get(configs['APPLICATION_IDENTIFIER'], None),
+                    headquarter_id=request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
+                    exclude_headquarter_validation=exclude_headquarter_validation
                 ).get()
                 if not profile:
                     raise PermissionDenied
-                setattr(request.user, 'profile', profile)
+                setattr(request, 'profile', profile)
             else:
-                setattr(request.user, 'profile', None)
+                setattr(request, 'profile', None)
 
     @staticmethod
     def __check_keys(configs):
