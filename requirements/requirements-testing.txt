@@ -1,13 +1,11 @@
-coverage==4.4.1
 mock>=1.0.1
 flake8>=2.1.0
-tox>=1.7.0
-codecov>=2.0.0
 pytest==5.1.2
 pytest-django==3.5.1
 pytest-cov==2.7.1
 djangorestframework
 Faker
+tox
 django-test-plus
 factory_boy
 djangorestframework_simplejwt
