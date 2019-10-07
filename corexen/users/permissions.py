@@ -38,7 +38,7 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
         profile = getattr(request.user, 'profile', None)
 
         # Users without headquarter will be restricted with another logic.
-        if profile and not profile.has_headquarter() or request.user.is_superuser:
+        if profile or request.user.is_superuser:
             return True
 
         # Apply django model permissions
