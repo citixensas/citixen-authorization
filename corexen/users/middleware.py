@@ -2,11 +2,13 @@ from importlib import import_module
 
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
-from django.core.exceptions import PermissionDenied, ImproperlyConfigured
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
 from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from corexen.utils.customexception import process_exception, PermissionDenied
 
 
 def get_user_jwt(request):
@@ -34,6 +36,7 @@ def get_user_jwt(request):
 
 class JWTAuthenticationMiddleware(MiddlewareMixin):
     """ Middleware for authenticating JSON Web Tokens in Authorize Header """
+
     def process_request(self, request):
         admin_url = '/%s' % settings.ADMIN_URL
         if not request.path.startswith(admin_url):
@@ -46,23 +49,26 @@ class CitixenProfileMiddleware(MiddlewareMixin):
     def process_view(self, request, view_func, *view_args, **view_kwargs):
         admin_url = '/%s' % settings.ADMIN_URL
         if not request.path.startswith(admin_url):
-            user = request.user
-            if user.is_authenticated:
-                configs = getattr(settings, 'CITIXEN', {})
-                self.__check_keys(configs)
-                exclude_headquarter_validation = getattr(view_func.cls, 'exclude_headquarter_validation', False)
-                profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
-                profile = profile_finder(
-                    user=user,
-                    app_id=request.META.get(configs['APPLICATION_IDENTIFIER'], None),
-                    headquarter_id=request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
-                    exclude_headquarter_validation=exclude_headquarter_validation
-                ).get()
-                if not profile:
-                    raise PermissionDenied
-                setattr(request, 'profile', profile)
-            else:
-                setattr(request, 'profile', None)
+            try:
+                user = request.user
+                if user.is_authenticated:
+                    configs = getattr(settings, 'CITIXEN', {})
+                    self.__check_keys(configs)
+                    exclude_headquarter_validation = getattr(view_func.cls, 'exclude_headquarter_validation', False)
+                    profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
+                    profile = profile_finder(
+                        user=user,
+                        app_id=request.META.get(configs['APPLICATION_IDENTIFIER'], None),
+                        headquarter_id=request.META.get(configs['HEADQUARTER_IDENTIFIER'], None),
+                        exclude_headquarter_validation=exclude_headquarter_validation
+                    ).get()
+                    if not profile:
+                        raise PermissionDenied("Authenticated user without a valid profile")
+                    setattr(request, 'profile', profile)
+                else:
+                    setattr(request, 'profile', None)
+            except Exception as exc:
+                return process_exception(exception=exc)
 
     @staticmethod
     def __check_keys(configs):
