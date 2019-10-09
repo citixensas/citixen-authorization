@@ -50,7 +50,7 @@ class CitixenProfileMiddleware(MiddlewareMixin):
             if user.is_authenticated:
                 configs = getattr(settings, 'CITIXEN', {})
                 self.__check_keys(configs)
-                exclude_headquarter_validation = getattr(view_func, 'exclude_headquarter_validation', False)
+                exclude_headquarter_validation = getattr(view_func.cls, 'exclude_headquarter_validation', False)
                 profile_finder = self.__import_finder(configs.get('PROFILE_FINDER', ''))
                 profile = profile_finder(
                     user=user,
