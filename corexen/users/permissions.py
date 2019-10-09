@@ -22,7 +22,7 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
     }
 
     def get_required_permissions(self, method, model_cls):
-        headquarter = self.headquarter.pk if getattr(self, 'headquarter', None) else '-'
+        headquarter = self.headquarter.pk if self.headquarter else '-'
         kwargs = {
             'app_label': model_cls._meta.app_label,
             'model_name': model_cls._meta.model_name,
@@ -37,8 +37,8 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
     def has_permission(self, request, view):
         profile = getattr(request.user, 'profile', None)
 
-        # Users without headquarter will be restricted with another logic.
-        if profile or request.user.is_superuser:
+        # Superusers can perform any action
+        if request.user.is_superuser:
             return True
 
         # Apply django model permissions
