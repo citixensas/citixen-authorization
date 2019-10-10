@@ -27,7 +27,7 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
         kwargs = {
             'app_label': model_cls._meta.app_label,
             'model_name': model_cls._meta.model_name,
-            'action_name: self.custom_action,
+            'action_name': self.custom_action,
             'headquarter': headquarter
         }
 
