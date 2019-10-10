@@ -10,6 +10,7 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
     def __init__(self):
         """"""
         self.headquarter = None
+        self.custom_action = ''
 
     perms_map = {
         'GET': ['%(app_label)s.view_%(model_name)s.%(headquarter)s'],
@@ -26,6 +27,7 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
         kwargs = {
             'app_label': model_cls._meta.app_label,
             'model_name': model_cls._meta.model_name,
+            'action_name: self.custom_action,
             'headquarter': headquarter
         }
 
