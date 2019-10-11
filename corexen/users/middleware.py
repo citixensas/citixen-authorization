@@ -48,7 +48,8 @@ class CitixenProfileMiddleware(MiddlewareMixin):
 
     def process_view(self, request, view_func, *view_args, **view_kwargs):
         admin_url = '/%s' % settings.ADMIN_URL
-        if not request.path.startswith(admin_url):
+        exclude_custom_url = getattr(settings, 'EXCLUDE_URLS_PROFILE_FINDER', [])
+        if not request.path.startswith(admin_url) and request.path not in exclude_custom_url:
             try:
                 user = request.user
                 if user.is_authenticated:
@@ -69,6 +70,7 @@ class CitixenProfileMiddleware(MiddlewareMixin):
                     setattr(request, 'profile', None)
             except Exception as exc:
                 return process_exception(exception=exc)
+
 
     @staticmethod
     def __check_keys(configs):
