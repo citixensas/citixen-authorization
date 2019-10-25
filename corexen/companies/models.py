@@ -11,6 +11,7 @@ class Company(models.Model):
     email = models.EmailField(max_length=100)
     country = models.CharField(max_length=60)  # This will be a relationship
     image_url = models.ImageField(upload_to='companies/images/')
+    namespace = models.CharField(max_length=60, null=True)
 
     is_active = models.BooleanField(default=False)
 
