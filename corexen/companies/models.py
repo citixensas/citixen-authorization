@@ -2,8 +2,10 @@ from uuid import uuid4
 
 from django.db import models
 
+from corexen.utils.models import CitixenModel
 
-class Company(models.Model):
+
+class Company(CitixenModel):
     """Company model."""
 
     nit = models.CharField(max_length=50)
@@ -18,15 +20,15 @@ class Company(models.Model):
     uuid = models.UUIDField(default=uuid4, primary_key=True)
 
     created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='companies')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
 
-class Headquarter(models.Model):
+class Headquarter(CitixenModel):
     """Headquarter model."""
+
+    uuid = models.UUIDField(default=uuid4, primary_key=True)
 
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
@@ -42,17 +44,9 @@ class Headquarter(models.Model):
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=60)
 
-    is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
 
-    recruitment = models.BooleanField(default=False)
-    recruitment_message = models.CharField(max_length=250, blank=True, null=True)
-
-    uuid = models.UUIDField(default=uuid4, primary_key=True)
-
     created_by = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='headquarters')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def activate_or_deactivate(self):
         self.is_active = not self.is_active
