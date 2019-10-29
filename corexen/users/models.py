@@ -48,6 +48,20 @@ class AbstractUser(AbstractBaseUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    is_banned = models.BooleanField(
+        _('banned'),
+        default=False,
+        help_text=_(
+            'Designate if this user should be treated as banned'
+        ),
+    )
+    is_enabled = models.BooleanField(
+        _('enabled'),
+        default=True,
+        help_text=_(
+            'Designate if this user should be treated as enabled'
+        ),
+    )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     objects = UserManager()
