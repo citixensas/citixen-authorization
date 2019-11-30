@@ -24,17 +24,31 @@ class UserHeadquarterPermissions(DjangoModelPermissions):
 
     def get_required_permissions(self, method, model_cls):
         headquarter = self.headquarter.pk if self.headquarter else '-'
-        kwargs = {
-            'app_label': model_cls._meta.app_label,
-            'model_name': model_cls._meta.model_name,
-            'action_name': self.custom_action,
-            'headquarter': headquarter
-        }
 
         if method not in self.perms_map:
             raise exceptions.MethodNotAllowed(method)
 
-        return [perm % kwargs for perm in self.perms_map[method]]
+        if isinstance(self.custom_action, list):
+            perms = []
+            for custom_action in self.custom_action:
+                kwargs = {
+                    'app_label': model_cls._meta.app_label,
+                    'model_name': model_cls._meta.model_name,
+                    'action_name': custom_action,
+                    'headquarter': headquarter
+                }
+                perms += [perm % kwargs for perm in self.perms_map[method]]
+
+            return perms
+        else:
+            kwargs = {
+                'app_label': model_cls._meta.app_label,
+                'model_name': model_cls._meta.model_name,
+                'action_name': self.custom_action,
+                'headquarter': headquarter
+            }
+
+            return [perm % kwargs for perm in self.perms_map[method]]
 
     def has_permission(self, request, view):
         profile = getattr(request.user, 'profile', None)
