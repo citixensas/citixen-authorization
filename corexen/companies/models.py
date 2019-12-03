@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from django.db import models
 
-from corexen.utils.models import CitixenModel
+from corexen.utils.models import CitixenModel, RandomFileName
 
 
 class Company(CitixenModel):
@@ -12,7 +12,7 @@ class Company(CitixenModel):
     name = models.CharField(max_length=120)
     email = models.EmailField(max_length=100)
     country = models.CharField(max_length=60)  # This will be a relationship
-    image_url = models.ImageField(upload_to='companies/images/')
+    image_url = models.ImageField(upload_to=RandomFileName('companies/images/'))
     namespace = models.CharField(max_length=60, null=True)
 
     is_active = models.BooleanField(default=False)
@@ -35,7 +35,7 @@ class Headquarter(CitixenModel):
     description = models.TextField(null=True, blank=True)
 
     name = models.CharField(max_length=120)
-    image_url = models.ImageField(upload_to='headquarters/images/')
+    image_url = models.ImageField(upload_to=RandomFileName('headquarters/images/'))
 
     email = models.EmailField(max_length=100, null=True)
     phone = models.CharField(max_length=30, null=True)
