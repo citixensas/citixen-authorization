@@ -228,6 +228,9 @@ class User(AbstractUser,
     """
     objects = UserManager()
 
+    class Meta:
+        ordering = ('first_name', 'last_name')
+
 
 class UserPermission(CitixenModel):
     """

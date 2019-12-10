@@ -5,6 +5,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.functional import SimpleLazyObject
+from django.utils.translation import gettext_lazy as _
 from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -64,18 +65,19 @@ class CitixenProfileMiddleware(MiddlewareMixin):
                         exclude_headquarter_validation=exclude_headquarter_validation
                     ).get()
                     if not profile:
-                        raise PermissionDenied("Authenticated user without a valid profile")
+                        raise PermissionDenied(_("Authenticated user without a valid profile"))
                     setattr(request, 'profile', profile)
                 else:
                     setattr(request, 'profile', None)
+            except ImproperlyConfigured as exc:
+                raise ImproperlyConfigured(exc)
             except Exception as exc:
                 return process_exception(exception=exc)
-
 
     @staticmethod
     def __check_keys(configs):
         if not {'HEADQUARTER_IDENTIFIER', 'APPLICATION_IDENTIFIER', 'PROFILE_FINDER'} <= set(configs):
-            raise ImproperlyConfigured('Some keywords for profile middleware were not provided')
+            raise ImproperlyConfigured(_('Some keywords for profile middleware were not provided'))
 
     @staticmethod
     def __import_finder(uri):
@@ -84,4 +86,4 @@ class CitixenProfileMiddleware(MiddlewareMixin):
             module = import_module(path)
             return getattr(module, class_name)
         except Exception:
-            raise ImproperlyConfigured('Profile finder for middleware not configured correctly')
+            raise ImproperlyConfigured(_('Profile finder for middleware not configured correctly'))

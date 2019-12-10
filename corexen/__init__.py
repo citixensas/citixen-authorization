@@ -1,8 +1,6 @@
 import importlib
-from . import companies, utils, users, permissions
 
-
-__version__ = '0.30.3'
+__version__ = '0.32.0'
 
 
 def _import_class_from_string(class_path):

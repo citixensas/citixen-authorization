@@ -24,8 +24,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sites",
     "corexen.companies",
+    "corexen.internationalization",
     "corexen.users",
-    "corexen.permissions",
 ]
 
 AUTH_USER_MODEL = 'users.User'

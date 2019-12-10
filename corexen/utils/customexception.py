@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.utils.translation import gettext_lazy as _
 
 
 class BaseCustomException(Exception):
@@ -11,7 +12,17 @@ class BaseCustomException(Exception):
         self.error_message = error_message
 
     def to_dict(self):
-        return {'errorMessage': self.error_message}
+        exception_dict = {
+            'code': self.status_code,
+            'status_code': self.status_code,
+            'errors': [
+                {
+                    'field': 'non_field_errors',
+                    'message': self.error_message
+                }
+            ]
+        }
+        return exception_dict
 
 
 class InvalidUsage(BaseCustomException):
@@ -32,6 +43,15 @@ def process_exception(exception):
         exception_dict = exception.to_dict()
     else:
         status = 500
-        exception_dict = {'errorMessage': 'Unexpected Error!'}
+        exception_dict = {
+            'code': status,
+            'status_code': status,
+            'errors': [
+                {
+                    'field': 'non_field_errors',
+                    'message': _("The server could not understand your request.")
+                }
+            ]
+        }
 
     return JsonResponse(exception_dict, status=status)
