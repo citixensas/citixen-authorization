@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from django.db import models
 
-from corexen.internationalization.models import City, Country, LanguageCode
+from corexen.internationalization.models import City, Country, LanguageCode, LatLngBounds
 from corexen.utils.models import CitixenModel, RandomFileName
 
 
@@ -40,10 +40,10 @@ class Headquarter(CitixenModel):
 
     email = models.EmailField(max_length=100, null=True)
     phone = models.CharField(max_length=30, null=True)
+
     address = models.CharField(max_length=120)
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
     city = models.ForeignKey(City, on_delete=models.PROTECT, related_name='headquarters')
-    language_code = models.ForeignKey(LanguageCode, on_delete=models.PROTECT, related_name='headquarters')
 
     is_deleted = models.BooleanField(default=False)
 

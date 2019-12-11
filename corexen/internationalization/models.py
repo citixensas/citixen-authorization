@@ -3,6 +3,13 @@ from django.db import models
 from corexen.utils.models import CitixenModel, RandomFileName
 
 
+class LatLngBounds(models.Model):
+    northeast_latitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
+    northeast_longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
+    southwest_latitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
+    southwest_longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
+
+
 class Country(CitixenModel):
     """Country model."""
 
@@ -17,8 +24,10 @@ class City(CitixenModel):
     """City model."""
 
     name = models.CharField(max_length=120, unique=True)
-    image_url = models.ImageField(upload_to=RandomFileName('city/images/'))
+    flag = models.ImageField(upload_to=RandomFileName('city/images/'))
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    google_map_key = models.CharField(max_length=150)
+    map_bounds = models.OneToOneField(LatLngBounds, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name} is a city of {self.country.name}'
