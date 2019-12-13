@@ -27,7 +27,7 @@ class City(CitixenModel):
     flag = models.ImageField(upload_to=RandomFileName('city/images/'))
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     google_map_key = models.CharField(max_length=150)
-    map_bounds = models.OneToOneField(LatLngBounds, null=True, on_delete=models.CASCADE)
+    map_bounds = models.OneToOneField(LatLngBounds, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.name} is a city of {self.country.name}'
