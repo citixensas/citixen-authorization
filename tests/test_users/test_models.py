@@ -22,7 +22,6 @@ class UserModelTestCase(CitixenTestCase):
         self.headquarter = HeadquarterFactory(
             company=self.company,
             city=self.city,
-            language_code=self.language_code,
             created_by=self.user,
         )
 
@@ -50,7 +49,6 @@ class UserModelTestCase(CitixenTestCase):
             name='headquarter1',
             company=self.company,
             city=self.city,
-            language_code=self.language_code,
             created_by=self.user,
         )
         self.assertEquals(self.user.user_permissions.count(), 0)
@@ -66,7 +64,6 @@ class UserModelTestCase(CitixenTestCase):
         headquarter = HeadquarterFactory(
             company=self.company,
             city=self.city,
-            language_code=self.language_code,
             created_by=self.user,
         )
         self.assertEquals(self.user.user_permissions.count(), 0)
