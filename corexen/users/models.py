@@ -228,7 +228,42 @@ class User(AbstractUser,
     """
     objects = UserManager()
 
+    phone_number = models.CharField(
+        _('phone_number'),
+        max_length=26,
+        null=True,
+        blank=True,
+        help_text=_('Verified phone number. 26 digits or fewer.')
+    )
+    non_verified_phone_number = models.CharField(
+        _('non_verified_phone_number'),
+        max_length=26,
+        null=True,
+        blank=True,
+        help_text=_('Non verified phone number. 26 digits or fewer.')
+    )
+    phone_number_verified_at = models.DateTimeField(
+        _('phone_number_verified_at'),
+        null=True,
+        blank=True,
+        help_text='Date time on which the phone number was verified.'
+    )
+
+    non_verified_email = models.EmailField(
+        _('non_email_address'),
+        null=True,
+        blank=True,
+        help_text='Verified email. This field is not used by all user profiles.'
+    )
+    email_verified_at = models.DateTimeField(
+        _('email_verified_at'),
+        null=True,
+        blank=True,
+        help_text='Date time on which the email was verified.'
+    )
+
     class Meta:
+        """Meta options."""
         ordering = ('first_name', 'last_name')
 
 
