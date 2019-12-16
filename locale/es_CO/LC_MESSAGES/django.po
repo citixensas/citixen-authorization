@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-16 21:13+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: configs/settings/develop.py:46
+msgid "English"
+msgstr "Inglés"
+
+#: configs/settings/develop.py:47
+msgid "Spanish colombia"
+msgstr "Español Colombia"
+
+#: corexen/companies/apps.py:7
+msgid "Companies"
+msgstr "Compañías"
+
+#: corexen/internationalization/apps.py:7
+msgid "Internationalization"
+msgstr "Internacionalización"
+
+#: corexen/users/apps.py:7
+msgid "Users"
+msgstr "Usuarios"
+
+#: corexen/users/middleware.py:68
+msgid "Authenticated user without a valid profile"
+msgstr "Usuario autenticado sin un perfil válido"
+
+#: corexen/users/middleware.py:80
+msgid "Some keywords for profile middleware were not provided"
+msgstr ""
+"No se proporcionaron algunas palabras clave para el middleware de perfil"
+
+#: corexen/users/middleware.py:89
+msgid "Profile finder for middleware not configured correctly"
+msgstr "Buscador de perfiles para middleware no configurado correctamente"
+
+#: corexen/users/models.py:40
+msgid "username"
+msgstr "Nombre de usuario"
+
+#: corexen/users/models.py:43
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+"Requerido. 150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_"
+
+#: corexen/users/models.py:46
+msgid "A user with that username already exists."
+msgstr "Ya existe un usuario con este nombre."
+
+#: corexen/users/models.py:49
+msgid "first name"
+msgstr "Nombre"
+
+#: corexen/users/models.py:50
+msgid "last name"
+msgstr "Apellido"
+
+#: corexen/users/models.py:51
+msgid "email address"
+msgstr "Dirección de correo electrónico"
+
+#: corexen/users/models.py:53
+msgid "staff status"
+msgstr "Es staff"
+
+#: corexen/users/models.py:55
+msgid "Designates whether the user can log into this admin site."
+msgstr "Indica si el usuario puede entrar en este sitio de administración."
+
+#: corexen/users/models.py:58
+msgid "active"
+msgstr "Activo"
+
+#: corexen/users/models.py:61
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+"Designa si este usuario debe ser tratado como activo. Anule la selección de "
+"esto en lugar de eliminar cuentas."
+
+#: corexen/users/models.py:66
+msgid "banned"
+msgstr "Baneado"
+
+#: corexen/users/models.py:69
+msgid "Designate if this user should be treated as banned"
+msgstr "Designa si este usuario debe ser tratado como baneado"
+
+#: corexen/users/models.py:73
+msgid "enabled"
+msgstr "Habilitado"
+
+#: corexen/users/models.py:76
+msgid "Designate if this user should be treated as enabled"
+msgstr "Designa si este usuario debe ser tratado como habilitado"
+
+#: corexen/users/models.py:79
+msgid "date joined"
+msgstr "Fecha de Registro"
+
+#: corexen/users/models.py:88
+msgid "user"
+msgstr "Usuario"
+
+#: corexen/users/models.py:89
+msgid "users"
+msgstr "Usuarios"
+
+#: corexen/users/models.py:118
+msgid "superuser status"
+msgstr "Estado de superusuario"
+
+#: corexen/users/models.py:121
+msgid ""
+"Designates that this user has all permissions without explicitly assigning "
+"them."
+msgstr ""
+"Designa que este usuario tiene todos los permisos sin asignarlos "
+"explícitamente."
+
+#: corexen/users/models.py:127 corexen/users/models.py:207
+msgid "groups"
+msgstr "Grupos"
+
+#: corexen/users/models.py:130 corexen/users/models.py:210
+msgid ""
+"The groups this user belongs to. A user will get all permissions granted to "
+"each of their groups."
+msgstr ""
+"Los grupos a los que pertenece este usuario. Un usuario obtendrá todos los "
+"permisos otorgados a cada uno de sus grupos."
+
+#: corexen/users/models.py:138 corexen/users/models.py:218
+msgid "user permissions"
+msgstr "Permisos de usuario"
+
+#: corexen/users/models.py:140 corexen/users/models.py:220
+msgid "Specific permissions for this user."
+msgstr "Permisos específicos para este usuario."
+
+#: corexen/users/models.py:249
+msgid "phone number"
+msgstr "Número de teléfono"
+
+#: corexen/users/models.py:253
+msgid "Verified phone number. 26 digits or fewer."
+msgstr "Número de teléfono verificado. 26 dígitos o menos."
+
+#: corexen/users/models.py:256
+msgid "non verified phone number"
+msgstr "Número de teléfono no verificado"
+
+#: corexen/users/models.py:260
+msgid "Non verified phone number. 26 digits or fewer."
+msgstr "Número de teléfono no verificado. 26 dígitos o menos."
+
+#: corexen/users/models.py:263
+msgid "phone number verified at"
+msgstr "Número de teléfono verificado por"
+
+#: corexen/users/models.py:266
+msgid "Date time on which the phone number was verified."
+msgstr "Fecha y hora en que se verificó el número de teléfono."
+
+#: corexen/users/models.py:270
+msgid "non email address"
+msgstr "No dirección de correo electrónico "
+
+#: corexen/users/models.py:273
+msgid "Verified email. This field is not used by all user profiles."
+msgstr ""
+"Correo electrónico verificado. Este campo no es utilizado por todos los "
+"perfiles de usuario."
+
+#: corexen/users/models.py:276
+msgid "email verified at"
+msgstr "Correo electrónico verificado por"
+
+#: corexen/users/models.py:279
+msgid "Date time on which the email was verified."
+msgstr "Fecha y hora en que se verificó el correo electrónico."
+
+#: corexen/utils/customexception.py:52
+msgid "The server could not understand your request."
+msgstr "El servidor no pudo entender su solicitud."
