@@ -26,20 +26,20 @@ class UserModelTestCase(CitixenTestCase):
         )
 
     def test_should_add_permissions_to_user(self):
-        self.assertEquals(self.user.user_permissions.count(), 0)
+        self.assertEqual(self.user.user_permissions.count(), 0)
         perms_amount = Permission.objects.count()
         self.assertTrue(perms_amount > 0)
         perm_pks = Permission.objects.all().values_list('codename', flat=True)
         self._add_user_permissions(perms=perm_pks, user=self.user,
                                    headquarter=self.headquarter)
-        self.assertEquals(perms_amount, self.user.user_permissions.count())
+        self.assertEqual(perms_amount, self.user.user_permissions.count())
 
     def test_should_verify_if_user_has_a_given_permission(self):
-        self.assertEquals(self.user.user_permissions.count(), 0)
+        self.assertEqual(self.user.user_permissions.count(), 0)
         perm = Permission.objects.first()
         UserPermission.objects.create(user=self.user, permission=perm,
                                       headquarter=self.headquarter)
-        self.assertEquals(self.user.user_permissions.count(), 1)
+        self.assertEqual(self.user.user_permissions.count(), 1)
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename,
                                       self.headquarter.pk)
         self.assertTrue(self.user.has_perm(perm_codename))

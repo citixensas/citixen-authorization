@@ -93,7 +93,6 @@ class UserInteractorTest(CitixenAPITestCase):
                            'email': user.email,
                            'uuid': user_id
                        }, status_code=200)
-        #   created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         found, remote_response = UserInteractor.retrive_user_info(user=user)
         self.assertEquals(remote_response['username'], self.valid_data['username'])
 
@@ -103,7 +102,6 @@ class UserInteractorTest(CitixenAPITestCase):
         user_id = str(user.uuid)
         m.register_uri('POST', f'http://127.0.0.1:8000/random_404/authentication/users/{user_id}',
                        json={}, status_code=404)
-        #   created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         found, remote_response = UserInteractor.retrive_user_info(user=user)
         self.assertFalse(found)
         self.assertEquals(len(remote_response), 0)
@@ -118,7 +116,7 @@ class UserInteractorTest(CitixenAPITestCase):
 
     def test_convert_empty_queryset_to_list(self, m):
         uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
-        self.assertEquals(len(uuid_list), 0)
+        self.assertEqual(len(uuid_list), 0)
 
     def test_retrive_users_list(self, m):
         user = self.make_user(username=self.valid_data['username'])

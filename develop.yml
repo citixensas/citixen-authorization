@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  corexen_develop:
+    image: corexen
+    build:
+      context: .
+      dockerfile: ./compose/develop/Dockerfile
+    volumes:
+      - .:/app
+

@@ -1,14 +1,12 @@
-mock>=1.0.1
-flake8>=2.1.0
-pytest==5.1.2
-pytest-django==3.5.1
-pytest-cov==2.7.1
-djangorestframework
-Faker
-tox
-django-test-plus
-factory_boy
-djangorestframework_simplejwt
-django-allauth
-Pillow
-requests_mock
+-r ./base.txt
+
+mock>=3.0.5
+flake8>=3.7.9
+pytest==5.3.2
+pytest-django==3.7.0
+pytest-cov==2.8.1
+Faker==3.0.0
+tox==3.14.2
+django-test-plus==1.4.0
+factory_boy==2.12.0
+requests_mock==1.7.0

@@ -53,4 +53,4 @@ class TestMiddlewareTestCase(CitixenAPITestCase):
         self.set_client_token(self.user)
         response = self.client.post('/post_app_user', {'foo': 'bar'}, format='json')
         self.response_200(response)
-        self.assertEquals(response.data, self.user.pk)
+        self.assertEqual(response.data, self.user.pk)

@@ -1,12 +1,10 @@
 from tox.config import parseconfig
-import os
+
 file = open(".travis.yml", "w")
 base_python = {
     "py36": "3.6",
     "py37": "3.7",
     "py38": "3.8-dev",
-    "lint": "3.7",
-    "read": "3.7",
 }
 env_configs = parseconfig(None, 'tox').envconfigs
 

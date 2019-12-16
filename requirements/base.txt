@@ -1,0 +1,2 @@
+djangorestframework_simplejwt==4.4.0
+Pillow==6.2.1

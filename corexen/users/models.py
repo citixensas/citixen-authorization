@@ -1,16 +1,30 @@
+from distutils.version import LooseVersion
 from uuid import uuid4
 
 from django.contrib import auth
-from django.contrib.auth.models import UserManager, \
-    _user_has_module_perms, _user_has_perm, _user_get_all_permissions, Permission, Group, AbstractBaseUser
+from django.contrib.auth.models import (
+    UserManager,
+    _user_has_module_perms,
+    _user_has_perm,
+    Permission,
+    Group,
+    AbstractBaseUser
+)
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.mail import send_mail
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, version
 from django.utils.translation import gettext_lazy as _
 
 from corexen.companies.models import Headquarter
 from corexen.utils.models import CitixenModel
+
+version_Django = version.get_main_version()
+
+if LooseVersion(version_Django) >= LooseVersion('3.0'):
+    from django.contrib.auth.models import _user_get_permissions
+else:
+    from django.contrib.auth.models import _user_get_all_permissions
 
 
 class AbstractUser(AbstractBaseUser):
@@ -144,7 +158,10 @@ class PermissionsMixin(models.Model):
         return permissions
 
     def get_all_permissions(self, obj=None):
-        return _user_get_all_permissions(self, obj)
+        if LooseVersion(version_Django) >= LooseVersion('3.0'):
+            return _user_get_permissions(self, obj, 'all')
+        else:
+            return _user_get_all_permissions(self, obj)
 
     def has_perm(self, perm, obj=None):
         """
@@ -246,20 +263,20 @@ class User(AbstractUser,
         _('phone_number_verified_at'),
         null=True,
         blank=True,
-        help_text='Date time on which the phone number was verified.'
+        help_text=_('Date time on which the phone number was verified.')
     )
 
     non_verified_email = models.EmailField(
         _('non_email_address'),
         null=True,
         blank=True,
-        help_text='Verified email. This field is not used by all user profiles.'
+        help_text=_('Verified email. This field is not used by all user profiles.')
     )
     email_verified_at = models.DateTimeField(
         _('email_verified_at'),
         null=True,
         blank=True,
-        help_text='Date time on which the email was verified.'
+        help_text=_('Date time on which the email was verified.')
     )
 
     class Meta:
@@ -275,6 +292,9 @@ class UserPermission(CitixenModel):
     permission = models.ForeignKey('auth.Permission', on_delete=models.DO_NOTHING)
 
     headquarter = models.ForeignKey(Headquarter, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        ordering = ('user', 'headquarter')
 
     def __str__(self):
         """Return friendly description."""
