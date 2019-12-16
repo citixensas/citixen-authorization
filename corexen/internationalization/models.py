@@ -16,6 +16,10 @@ class Country(CitixenModel):
     name = models.CharField(max_length=120, unique=True)
     national_flag = models.ImageField(upload_to=RandomFileName('country/images/'))
 
+    class Meta:
+        """Meta options."""
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
@@ -29,6 +33,10 @@ class City(CitixenModel):
     google_map_key = models.CharField(max_length=150)
     map_bounds = models.OneToOneField(LatLngBounds, null=True, blank=True, on_delete=models.CASCADE)
 
+    class Meta:
+        """Meta options."""
+        ordering = ('name',)
+
     def __str__(self):
         return f'{self.name} is a city of {self.country.name}'
 
@@ -38,6 +46,10 @@ class LanguageCode(CitixenModel):
 
     name = models.CharField(max_length=120, unique=True)
     code = models.CharField(max_length=120, unique=True)
+
+    class Meta:
+        """Meta options."""
+        ordering = ('code',)
 
     def __str__(self):
         return f'{self.code} - {self.name}'

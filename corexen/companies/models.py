@@ -22,6 +22,10 @@ class Company(CitixenModel):
 
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='companies')
 
+    class Meta:
+        """Meta options."""
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
@@ -48,6 +52,10 @@ class Headquarter(CitixenModel):
     is_deleted = models.BooleanField(default=False)
 
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='headquarters')
+
+    class Meta:
+        """Meta options."""
+        ordering = ('name',)
 
     def activate_or_deactivate(self):
         self.is_active = not self.is_active
