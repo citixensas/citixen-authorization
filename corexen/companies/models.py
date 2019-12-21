@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.contrib.postgres.fields import CICharField
 from django.db import models
 
 from corexen.internationalization.models import City, Country, LanguageCode, LatLngBounds
@@ -10,7 +11,7 @@ class Company(CitixenModel):
     """Company model."""
 
     nit = models.CharField(max_length=50)
-    name = models.CharField(max_length=120, unique=True)
+    name = CICharField(max_length=120, unique=True)
     email = models.EmailField(max_length=100)
     country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name='companies')
     image_url = models.ImageField(upload_to=RandomFileName('companies/images/'))
@@ -39,7 +40,7 @@ class Headquarter(CitixenModel):
 
     description = models.TextField(null=True, blank=True)
 
-    name = models.CharField(max_length=120, unique=True)
+    name = CICharField(max_length=120)
     image_url = models.ImageField(upload_to=RandomFileName('headquarters/images/'))
 
     email = models.EmailField(max_length=100, null=True)
@@ -56,6 +57,7 @@ class Headquarter(CitixenModel):
     class Meta:
         """Meta options."""
         ordering = ('name',)
+        unique_together = (('name', 'city',), ('name', 'company',))
 
     def activate_or_deactivate(self):
         self.is_active = not self.is_active
