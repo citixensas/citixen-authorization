@@ -1,11 +1,28 @@
 version: '3.7'
 
+volumes:
+  corexen_develop_postgres_data: {}
+
 services:
-  corexen_develop:
+  corexen_develop.django:
     image: corexen
     build:
       context: .
-      dockerfile: ./compose/develop/Dockerfile
+      dockerfile: ./compose/develop/django/Dockerfile
     volumes:
       - .:/app
+    env_file:
+      - ./.envs/.postgres
+    depends_on:
+      - corexen_develop.postgres
+
+  corexen_develop.postgres:
+    build:
+      context: .
+      dockerfile: ./compose/develop/postgres/Dockerfile
+    image: corexen_develop_postgres
+    volumes:
+      - corexen_develop_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.postgres
 

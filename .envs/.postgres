@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=corexen_develop.postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=corexendb_test
+POSTGRES_USER=O7ojkivt5HFmIPaUP6IAeH5xXTmRsK66biDQe1Ls
+POSTGRES_PASSWORD=rvBKb3mtnjFtD7ayTFvIGbl1LJmZnNm9hIka55E0KtHsIwgzbhCApoA0wlN0
