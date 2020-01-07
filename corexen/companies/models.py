@@ -57,7 +57,6 @@ class Headquarter(CitixenModel):
     class Meta:
         """Meta options."""
         ordering = ('name',)
-        unique_together = (('name', 'city',), ('name', 'company',))
 
     def activate_or_deactivate(self):
         self.is_active = not self.is_active

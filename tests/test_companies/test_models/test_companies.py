@@ -69,7 +69,7 @@ class HeadquarterModelTestCase(TestCase):
 
         self.assertIsNotNone(other_headquarter)
 
-    def test_should_does_not_create_headquarters_with_the_same_name_in_the_same_city(self):
+    def test_should_create_headquarters_with_the_same_name_in_the_same_city(self):
         # Even if the companies doesn't the same.
         other_company = Company.objects.create(
             name='test company #2',
@@ -78,9 +78,7 @@ class HeadquarterModelTestCase(TestCase):
             namespace='testcompany2'
         )
 
-        self.assertRaises(
-            IntegrityError,
-            Headquarter.objects.create,
+        other_headquarter = Headquarter.objects.create(
             **{
                 'company': other_company,
                 'name': 'test headquarter',
@@ -90,12 +88,12 @@ class HeadquarterModelTestCase(TestCase):
             }
         )
 
-    def test_should_does_not_create_headquarters_with_the_same_name_in_the_same_company(self):
+        self.assertIsNotNone(other_headquarter)
+
+    def test_should_create_headquarters_with_the_same_name_in_the_same_company(self):
         other_city = City.objects.create(name='city #2', country=self.country, google_map_key='key')
 
-        self.assertRaises(
-            IntegrityError,
-            Headquarter.objects.create,
+        other_headquarter = Headquarter.objects.create(
             **{
                 'company': self.company,
                 'name': 'test headquarter',
@@ -105,3 +103,4 @@ class HeadquarterModelTestCase(TestCase):
             }
         )
 
+        self.assertIsNotNone(other_headquarter)
