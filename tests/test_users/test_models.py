@@ -1,10 +1,11 @@
 import uuid
 
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import Permission
 from faker import Faker
 
 from corexen.internationalization.models import Country, City, LanguageCode
-from corexen.users.models import UserPermission
+from corexen.users.models import UserPermission, User
 from corexen.utils.testing import CitixenTestCase
 from tests.test_companies.factories import CompanyFactory, HeadquarterFactory
 
@@ -72,3 +73,27 @@ class UserModelTestCase(CitixenTestCase):
         perm = Permission.objects.first()
         perm_codename = '%s.%s.%s' % (perm.content_type.app_label, perm.codename, headquarter.pk)
         self.assertFalse(self.user.has_perm(perm_codename))
+
+
+class UsernameValidationTestCase(CitixenTestCase):
+    def setUp(self) -> None:
+        self.username = 'abcEiou'
+        self.password = fake.password()
+        self.user = User.objects.create_user(username=self.username, password=self.password)
+
+    def test_should_authenticate_user_with_case_insensitive(self):
+        credential_list = [
+            {'username': 'abceiou', 'password': self.password},
+            {'username': self.username, 'password': self.password},
+            {'username': 'AbCeIOu', 'password': self.password},
+        ]
+        for credentials in credential_list:
+            self.assertEqual(authenticate(**credentials), self.user)
+
+    def test_should_not_authenticate_with_dots_or_with_(self):
+        credential_list = [
+            {'username': 'abce.iou', 'password': self.password},
+            {'username': 'ábceíoú', 'password': self.password},
+        ]
+        for credentials in credential_list:
+            self.assertIsNone(authenticate(**credentials), self.user)
