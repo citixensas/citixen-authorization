@@ -22,6 +22,7 @@ from corexen.utils.models import CitixenModel
 version_Django = version.get_main_version()
 
 if LooseVersion(version_Django) >= LooseVersion('3.0'):
+    # noinspection PyUnresolvedReferences
     from django.contrib.auth.models import _user_get_permissions
 else:
     from django.contrib.auth.models import _user_get_all_permissions
@@ -172,7 +173,7 @@ class PermissionsMixin(models.Model):
         permissions for that object.
         """
         # Active superusers have all permissions.
-        if self.is_active and self.is_superuser:
+        if getattr(self, 'is_active', None) and self.is_superuser:
             return True
 
         # Otherwise we need to check the backends.
@@ -191,7 +192,7 @@ class PermissionsMixin(models.Model):
         Use similar logic as has_perm(), above.
         """
         # Active superusers have all permissions.
-        if self.is_active and self.is_superuser:
+        if getattr(self, 'is_active', None) and self.is_superuser:
             return True
 
         return _user_has_module_perms(self, app_label)

@@ -1,11 +1,11 @@
 version: '3.7'
 
 services:
-  corexen_develop:
+  corexen_develop.django:
     image: corexen
     build:
       context: .
-      dockerfile: ./compose/develop/Dockerfile
+      dockerfile: ./compose/develop/django/Dockerfile
     volumes:
       - .:/app
 
