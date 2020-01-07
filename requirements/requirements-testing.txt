@@ -11,4 +11,3 @@ django-test-plus==1.4.0
 factory_boy==2.12.0
 requests_mock==1.7.0
 psycopg2==2.8.3 --no-binary psycopg2  # https://github.com/psycopg/psycopg2
-django-environ==0.4.5  # https://github.com/joke2k/django-environ

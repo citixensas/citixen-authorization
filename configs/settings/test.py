@@ -1,25 +1,17 @@
 # -*- coding: utf-8
 from __future__ import unicode_literals, absolute_import
-import environ
 
 DEBUG = True
 
 SECRET_KEY = "Jb4KwtjG4CTOc3ZviJGrxSsNecosF9n5ODbUker3rmd4GdZF4i7Zd79hDbonb0RD"
 
-env = environ.Env()
-
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.str('POSTGRES_DB', default='corexen_test'),
-        'USER': env.str('POSTGRES_USER', default='corexen_user'),
-        'PASSWORD': env.str('POSTGRES_PASSWORD', default='corexensecretpassword.'),
-        'HOST': env.str('POSTGRES_HOST', default='localhost'),
-        'PORT': env.str('POSTGRES_PORT', default='5432'),
-        'ATOMIC_REQUESTS': True
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     }
 }
 
@@ -29,7 +21,6 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sites",
-    "django.contrib.postgres",
     "corexen.companies",
     "corexen.internationalization",
     "corexen.users",
