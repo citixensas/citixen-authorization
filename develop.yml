@@ -1,8 +1,5 @@
 version: '3.7'
 
-volumes:
-  corexen_develop_postgres_data: {}
-
 services:
   corexen_develop.django:
     image: corexen
