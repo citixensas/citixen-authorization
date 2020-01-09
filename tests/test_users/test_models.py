@@ -97,3 +97,8 @@ class UsernameValidationTestCase(CitixenTestCase):
         ]
         for credentials in credential_list:
             self.assertIsNone(authenticate(**credentials), self.user)
+
+    def test_should_save_messenger_username_in_lowercase_on_db(self):
+        user = User.objects.create_user(username='MYUSERNAMEINUPPERCASE')
+        user.refresh_from_db()
+        self.assertEqual(user.username, 'myusernameinuppercase')

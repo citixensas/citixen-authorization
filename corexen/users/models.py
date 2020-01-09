@@ -1,3 +1,4 @@
+import unicodedata
 from distutils.version import LooseVersion
 from uuid import uuid4
 
@@ -104,6 +105,11 @@ class AbstractUser(AbstractBaseUser):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
+
+    @classmethod
+    def normalize_username(cls, username):
+        """Normalize email and lowercase during normalizing."""
+        return super(AbstractUser, cls).normalize_username(username).lower()
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
