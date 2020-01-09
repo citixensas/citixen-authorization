@@ -1,6 +1,6 @@
 import importlib
 
-__version__ = '0.40.0'
+__version__ = '0.40.1'
 
 
 def _import_class_from_string(class_path):
