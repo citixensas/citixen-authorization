@@ -12,6 +12,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser
 )
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.postgres.fields import CICharField, CIEmailField
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone, version
@@ -38,7 +39,7 @@ class AbstractUser(AbstractBaseUser):
         """
     username_validator = UnicodeUsernameValidator()
 
-    username = models.CharField(
+    username = CICharField(
         _('username'),
         max_length=150,
         unique=True,
@@ -50,7 +51,7 @@ class AbstractUser(AbstractBaseUser):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), blank=True, null=True)
+    email = CIEmailField(_('email address'), blank=True, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
