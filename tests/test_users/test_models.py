@@ -52,7 +52,7 @@ class UserModelTestCase(CitixenTestCase):
             city=self.city,
             created_by=self.user,
         )
-        self.assertEquals(self.user.user_permissions.count(), 0)
+        self.assertEqual(self.user.user_permissions.count(), 0)
         perm_pks = Permission.objects.all().values_list('codename', flat=True)
         self._add_user_permissions(perms=perm_pks, user=self.user,
                                    headquarter=self.headquarter)
@@ -67,7 +67,7 @@ class UserModelTestCase(CitixenTestCase):
             city=self.city,
             created_by=self.user,
         )
-        self.assertEquals(self.user.user_permissions.count(), 0)
+        self.assertEqual(self.user.user_permissions.count(), 0)
         perm_pks = Permission.objects.all().values_list('codename', flat=True)
         self._add_user_permissions(perms=perm_pks, user=self.user, headquarter=self.headquarter)
         perm = Permission.objects.first()

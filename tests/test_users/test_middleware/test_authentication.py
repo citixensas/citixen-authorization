@@ -37,7 +37,7 @@ class TestMiddlewareTestCase(CitixenAPITestCase):
         self.response_200(response)
         response = self.client.post('/post', {'foo': 'bar'}, format='json')
         self.response_200(response)
-        self.assertEquals(response.data, {'foo': 'bar'})
+        self.assertEqual(response.data, {'foo': 'bar'})
 
     def test_not_can_access_request_post_with_invalid_token(self):
         self.client.credentials(HTTP_AUTHORIZATION='Bearer %s' % EXAMPLE_TOKEN_INVALID)

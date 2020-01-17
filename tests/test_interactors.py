@@ -58,7 +58,7 @@ class UserInteractorTest(CitixenAPITestCase):
         created, app_user, remote_response = UserInteractor.create_user(**self.valid_data)
         self.assertFalse(created)
         self.assertIsNone(app_user)
-        self.assertEquals(remote_response, {
+        self.assertEqual(remote_response, {
             'username': ['El nombre de usuario ya está en uso.'],
             'email': ['El correo ya está en uso.']
         })
@@ -94,7 +94,7 @@ class UserInteractorTest(CitixenAPITestCase):
                            'uuid': user_id
                        }, status_code=200)
         found, remote_response = UserInteractor.retrive_user_info(user=user)
-        self.assertEquals(remote_response['username'], self.valid_data['username'])
+        self.assertEqual(remote_response['username'], self.valid_data['username'])
 
     @override_settings(URL_USER_INFO="authentication/users_list/")
     def test_retrive_user_info_fail_when_server_handle_404(self, m):
@@ -104,13 +104,13 @@ class UserInteractorTest(CitixenAPITestCase):
                        json={}, status_code=404)
         found, remote_response = UserInteractor.retrive_user_info(user=user)
         self.assertFalse(found)
-        self.assertEquals(len(remote_response), 0)
+        self.assertEqual(len(remote_response), 0)
 
     def test_convert_queryset_to_list(self, m):
         user1 = self.make_user(username='user1')
         user2 = self.make_user(username='user2')
         uuid_list = UserInteractor.convert_user_queryset_to_list_uuid(User.objects.all())
-        self.assertEquals(len(uuid_list), 2)
+        self.assertEqual(len(uuid_list), 2)
         self.assertIn(str(user1.uuid), uuid_list)
         self.assertIn(str(user2.uuid), uuid_list)
 
@@ -125,12 +125,12 @@ class UserInteractorTest(CitixenAPITestCase):
                            {'uuid': str(user.uuid)}
                        ], status_code=200)
         response = UserInteractor.retrive_users_list(queryset=User.objects.all())
-        self.assertEquals(len(response), 1)
-        self.assertEquals(response[0]['uuid'], str(user.uuid))
+        self.assertEqual(len(response), 1)
+        self.assertEqual(response[0]['uuid'], str(user.uuid))
 
     def test_retrive_users_empty_list(self, m):
         m.register_uri('POST', f'http://127.0.0.1:8000/api/authentication/users/', json=[], status_code=200)
         response = UserInteractor.retrive_users_list(queryset=User.objects.none())
-        self.assertEquals(len(response), 0)
+        self.assertEqual(len(response), 0)
 
 

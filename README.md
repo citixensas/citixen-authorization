@@ -4,6 +4,8 @@ Citixen Authorization
 
 A simple application to manage the authorization system in general.
 
+[![Build Status](https://travis-ci.org/citixensas/citixen-authorization.svg?branch=master)](https://travis-ci.org/citixensas/citixen-authorization)
+
 Documentation
 -------------
 
