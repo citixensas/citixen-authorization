@@ -273,6 +273,7 @@ class User(AbstractUser,
         blank=True,
         help_text=_('Date time on which the phone number was verified.')
     )
+    verification_code = models.CharField(max_length=5, null=True, blank=True)
 
     non_verified_email = models.EmailField(
         _('non email address'),
