@@ -46,6 +46,8 @@ class Headquarter(CitixenModel):
     email = models.EmailField(max_length=100, null=True)
     phone = models.CharField(max_length=30, null=True)
 
+    latitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
+    longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
     address = models.CharField(max_length=120)
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
     city = models.ForeignKey(City, on_delete=models.PROTECT, related_name='headquarters')
