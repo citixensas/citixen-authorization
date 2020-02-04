@@ -21,6 +21,8 @@ class Country(CitixenModel):
     name = models.CharField(max_length=120, unique=True)
     national_flag = models.ImageField(upload_to=RandomFileName('country/images/'))
 
+    calling_code = models.CharField(max_length=9, default='')
+
     class Meta:
         """Meta options."""
         ordering = ('name',)
