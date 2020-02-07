@@ -2,7 +2,8 @@
 -r ./requirements-testing.txt
 
 bumpversion==0.5.3
-wheel==0.33.6
-django==3.0.2
+wheel==0.34.2
+django==3.0.3
+googlemaps==4.1.0
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
