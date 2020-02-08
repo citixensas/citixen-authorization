@@ -2,12 +2,12 @@ import json
 import os
 from decimal import Decimal
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from corexen.internationalization.management.utils import ManageInternationalization
 from corexen.internationalization.models import Country, Location, LatLngBounds
-from configs.settings.develop import DATA_DIR
 
 
 class Command(BaseCommand):
@@ -43,7 +43,7 @@ class Command(BaseCommand):
                 )
 
             # Load data Administrative Area Level 1
-            with open(os.path.join(DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
+            with open(os.path.join(settings.DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
                     print('administrative_area_level_1: ' + location['administrative_area_level_1'])
@@ -69,7 +69,7 @@ class Command(BaseCommand):
             instances_locality = {}
             # Load data Locality
             locality = 0
-            with open(os.path.join(DATA_DIR, 'colombia.json')) as json_file:
+            with open(os.path.join(settings.DATA_DIR, 'colombia.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
                     locality += 1
