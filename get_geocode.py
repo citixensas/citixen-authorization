@@ -13,7 +13,7 @@ data_admin_area_1_geo_coding = []
 
 country = {'code': 57, 'name': 'Colombia'}
 
-with open('colombia_code.csv', newline='', encoding='utf-8-sig') as f:
+with open('data/colombia_code.csv', newline='', encoding='utf-8-sig') as f:
     reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
     for row in reader:
         print(f'Buscando Geocoding para: {row[3]}, {row[3]}, {row[1]}, ' + country['name'])
@@ -29,7 +29,7 @@ with open('colombia_code.csv', newline='', encoding='utf-8-sig') as f:
             'google': geocode_result[0]
         })
 
-with open('colombia_administrative1_code.csv', newline='', encoding='utf-8-sig') as f:
+with open('data/colombia_administrative1_code.csv', newline='', encoding='utf-8-sig') as f:
     reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
     for row in reader:
         print(f'Buscando Geocoding para: {row[1]}, ' + country['name'])

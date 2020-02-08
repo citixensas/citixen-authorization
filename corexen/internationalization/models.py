@@ -1,10 +1,9 @@
 from django.contrib.postgres.fields import CICharField
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from mptt.models import TreeForeignKey, MPTTModel
 
-from corexen.utils.models import CitixenModel, RandomFileName
+from corexen.utils.models import JSONField, CitixenModel, RandomFileName
 
 
 class LatLngBounds(models.Model):

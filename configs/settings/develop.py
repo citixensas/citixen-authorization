@@ -1,8 +1,18 @@
 # -*- coding: utf-8
 from __future__ import unicode_literals, absolute_import
 
+import os
+
 import environ
 from django.utils.translation import ugettext_lazy as _
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = (
+    environ.Path(__file__) - 3
+)  # (configs/settings/base.py - 3 = /)
+
+APPS_DIR = ROOT_DIR.path('corexen')
+DATA_DIR = ROOT_DIR.path('data')
 
 env = environ.Env()
 
@@ -11,14 +21,9 @@ SECRET_KEY = "Jb4KwtjG4CTOc3ZviJGrxSsNecosF9n5ODbUker3rmd4GdZF4i7Zd79hDbonb0RD"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
+        "NAME": os.path.join(DATA_DIR, 'db.sqlite3'),
     }
 }
-
-ROOT_DIR = (
-    environ.Path(__file__) - 3
-)
-APPS_DIR = ROOT_DIR.path("corexen")
 
 # GENERAL
 # ------------------------------------------------------------------------------

@@ -32,3 +32,6 @@ htmlcov
 .idea
 venv/
 .vscode/
+
+# DB Sqlite Ignore
+data/db.sqlite3

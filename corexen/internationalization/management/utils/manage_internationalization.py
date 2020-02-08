@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from corexen.internationalization.models import Country, Location, LanguageCode, LatLngBounds
 from corexen.utils.shortcuts import get_object_or_none
 
@@ -7,46 +5,21 @@ from corexen.utils.shortcuts import get_object_or_none
 class ManageInternationalization:
 
     @staticmethod
-    def create_country(
-        name,
-        administrative_area_level,
-        calling_code,
-        administrative_area_level_1_name='',
-        administrative_area_level_2_name='',
-        administrative_area_level_3_name='',
-        national_flag='country/flag.jpg'
-    ):
-        country = get_object_or_none(Country, name=name)
+    def get_or_create_country(instance_country):
+        country = get_object_or_none(Country, name=instance_country.name)
         if not country:
-            country = Country.objects.create(
-                name=name,
-                administrative_area_level=administrative_area_level,
-                administrative_area_level_1_name=administrative_area_level_1_name,
-                administrative_area_level_2_name=administrative_area_level_2_name,
-                administrative_area_level_3_name=administrative_area_level_3_name,
-                calling_code=calling_code,
-                national_flag=national_flag)
+            instance_country.save()
+            return instance_country
         return country
 
     @staticmethod
-    def create_location(name, country, google_map_key, map_bounds=None, flag='location/flag.jpg'):
-        location = get_object_or_none(Location, name=name)
+    def get_or_create_location(instance_location: Location, instance_bounds: LatLngBounds):
+        location = get_object_or_none(Location, code=instance_location.code, country=instance_location.country.pk)
         if not location:
-            if not map_bounds:
-                map_bounds = LatLngBounds.objects.create(
-                    name=name,
-                    northeast_latitude=Decimal("10.503767000000000"),
-                    northeast_longitude=Decimal("-73.224466000000000"),
-                    southwest_latitude=Decimal("10.425625000000000"),
-                    southwest_longitude=Decimal("-73.301382000000000")
-                )
-            location = Location.objects.create(
-                name=name,
-                country=country,
-                google_map_key=google_map_key,
-                map_bounds=map_bounds,
-                flag=flag
-            )
+            instance_bounds.save()
+            instance_location.map_bounds_id = instance_bounds.pk
+            instance_location.save()
+            return instance_location
         return location
 
     @staticmethod
