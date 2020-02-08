@@ -14,8 +14,8 @@ class LatLngBounds(models.Model):
     southwest_longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
 
     def __str__(self):
-        return f'{self.name}: NE[{self.northeast_latitude} - {self.northeast_longitude}] - ' \
-               f'SW[{self.southwest_latitude} - {self.southwest_longitude}] '
+        return f'{self.name}: NE[{self.northeast_latitude}, {self.northeast_longitude}] - ' \
+               f'SW[{self.southwest_latitude}, {self.southwest_longitude}] '
 
 
 class Country(CitixenModel):

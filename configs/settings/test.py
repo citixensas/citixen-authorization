@@ -15,7 +15,7 @@ DATABASES = {
     }
 }
 
-ROOT_URLCONF = "tests.urls"
+ROOT_URLCONF = "configs.urls"
 
 INSTALLED_APPS = [
     "django.contrib.auth",
