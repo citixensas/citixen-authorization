@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Country, Location, LanguageCode, LatLngBounds
+from .models import Country, LocationArea, LanguageCode, LatLngBounds
 
 
 admin.site.register(LanguageCode)
@@ -27,8 +27,8 @@ class CountryAdmin(admin.ModelAdmin):
     ordering = ('-id',)
 
 
-@admin.register(Location)
-class LocationAdmin(admin.ModelAdmin):
+@admin.register(LocationArea)
+class LocationAreaAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'parent', 'country', 'type', 'map_bounds')
     list_filter = ('country', 'type')
     search_fields = (

@@ -1,7 +1,7 @@
 -r ./base.txt
 -r ./requirements-testing.txt
 
-bumpversion==0.5.3
+bump2version==1.0.0
 wheel==0.34.2
 django==3.0.3
 googlemaps==4.1.0

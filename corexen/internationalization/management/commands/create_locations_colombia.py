@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from corexen.internationalization.management.utils import ManageInternationalization
-from corexen.internationalization.models import Country, Location, LatLngBounds
+from corexen.internationalization.models import Country, LocationArea, LatLngBounds
 
 
 class Command(BaseCommand):
@@ -47,13 +47,13 @@ class Command(BaseCommand):
                 data = json.load(json_file)
                 for location in data:
                     print('administrative_area_level_1: ' + location['administrative_area_level_1'])
-                    instance_location = Location(
+                    instance_location = LocationArea(
                         name=location['administrative_area_level_1'],
                         flag='locations/flag.jpg',
                         country=country,
                         parent=None,
                         code=int(location['code_administrative_area_level_1']),
-                        type=Location.Types.administrative_area_level_1,
+                        type=LocationArea.Types.administrative_area_level_1,
                         google_map_key=location['google']['formatted_address'],
                         geo_code_json=location['google']
                     )
@@ -75,13 +75,13 @@ class Command(BaseCommand):
                     locality += 1
                     print('locality: ' + str(locality) + ' ' + location['locality'])
 
-                    instance_location = Location(
+                    instance_location = LocationArea(
                         name=location['locality'],
                         flag='locations/flag.jpg',
                         country=country,
                         parent=instances_administrative_area_level_1[str(location['code_administrative_area_level_1'])],
                         code=int(location['code_locality']),
-                        type=Location.Types.locality,
+                        type=LocationArea.Types.locality,
                         google_map_key=location['google']['formatted_address'],
                         geo_code_json=location['google']
                     )

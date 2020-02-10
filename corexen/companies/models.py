@@ -3,7 +3,7 @@ from uuid import uuid4
 from django.contrib.postgres.fields import CICharField
 from django.db import models
 
-from corexen.internationalization.models import Location, Country
+from corexen.internationalization.models import LocationArea, Country
 from corexen.utils.models import CitixenModel, RandomFileName
 
 
@@ -50,7 +50,7 @@ class Headquarter(CitixenModel):
     longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
     address = models.CharField(max_length=120)
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
-    city = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='headquarters')
+    city = models.ForeignKey(LocationArea, on_delete=models.PROTECT, related_name='headquarters')
 
     is_deleted = models.BooleanField(default=False)
 

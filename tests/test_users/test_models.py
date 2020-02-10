@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import Permission
 from faker import Faker
 
-from corexen.internationalization.models import Country, Location, LanguageCode
+from corexen.internationalization.models import Country, LocationArea, LanguageCode
 from corexen.users.models import UserPermission, User
 from corexen.utils.testing import CitixenTestCase
 from tests.test_companies.factories import CompanyFactory, HeadquarterFactory
@@ -17,11 +17,11 @@ class UserModelTestCase(CitixenTestCase):
     def setUp(self):
         self.user = self.make_user()
         self.country = Country.objects.create(name='Colombia')
-        self.city = Location.objects.create(
+        self.city = LocationArea.objects.create(
             name='Valledupar',
             country=self.country,
             code=5001,
-            type=Location.Types.locality
+            type=LocationArea.Types.locality
         )
         self.language_code = LanguageCode.objects.create(name='Español', code='Es_co')
         self.company = CompanyFactory(country=self.country, created_by=self.user)

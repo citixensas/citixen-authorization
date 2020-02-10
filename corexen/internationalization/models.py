@@ -48,7 +48,7 @@ class Country(CitixenModel):
         return self.name
 
 
-class Location(MPTTModel, CitixenModel):
+class LocationArea(MPTTModel, CitixenModel):
     """location model."""
 
     class Types(models.TextChoices):
