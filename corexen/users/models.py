@@ -229,6 +229,7 @@ class AppPermissionsMixin(PermissionsMixin):
         related_name="user_set",
         related_query_name="user",
         through='users.UserPermission',
+        through_fields=('user', 'permission')
     )
 
     class Meta(PermissionsMixin.Meta):
@@ -304,6 +305,7 @@ class UserPermission(CitixenModel):
 
     class Meta:
         ordering = ('user', 'headquarter')
+        unique_together = (('user', 'permission', 'headquarter'),)
 
     def __str__(self):
         """Return friendly description."""
