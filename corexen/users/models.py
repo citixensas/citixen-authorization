@@ -235,6 +235,7 @@ class AppPermissionsMixin(PermissionsMixin):
         abstract = True
 
 
+
 class RemoteUserModelMixin(models.Model):
     """
     This mixin expose unique idenfier.
@@ -304,6 +305,7 @@ class UserPermission(CitixenModel):
 
     class Meta:
         ordering = ('user', 'headquarter')
+        unique_together = (('user', 'permission', 'headquarter'),)
 
     def __str__(self):
         """Return friendly description."""
