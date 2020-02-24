@@ -17,4 +17,8 @@ RUN apk update \
 COPY ./requirements /requirements
 RUN pip install -r /requirements/requirements-dev.txt
 
+COPY ./compose/develop/django/start /start
+RUN sed -i 's/\r$//g' /start
+RUN chmod +x /start
+
 WORKDIR /app

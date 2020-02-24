@@ -1,2 +1,3 @@
 djangorestframework_simplejwt==4.4.0
+django-environ==0.4.5  # https://github.com/joke2k/django-environ
 Pillow==7.0.0

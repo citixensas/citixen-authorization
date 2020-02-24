@@ -17,7 +17,12 @@ class UserModelTestCase(CitixenTestCase):
     def setUp(self):
         self.user = self.make_user()
         self.country = Country.objects.create(name='Colombia')
-        self.city = City.objects.create(name='Colombia', country=self.country)
+        self.city = City.objects.create(
+            name='Valledupar',
+            country=self.country,
+            code=5001,
+            type=City.Types.locality
+        )
         self.language_code = LanguageCode.objects.create(name='Español', code='Es_co')
         self.company = CompanyFactory(country=self.country, created_by=self.user)
         self.headquarter = HeadquarterFactory(
