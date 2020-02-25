@@ -1,18 +1,9 @@
 from django.contrib import admin
 
-from .models import Country, City, LanguageCode, LatLngBounds
+from .models import Country, City, LanguageCode
 
 
 admin.site.register(LanguageCode)
-
-
-@admin.register(LatLngBounds)
-class LatLngBoundsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'northeast_latitude', 'northeast_longitude', 'southwest_latitude', 'southwest_longitude')
-    search_fields = (
-        'name',
-    )
-    ordering = ('-id',)
 
 
 @admin.register(Country)
@@ -29,7 +20,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 @admin.register(City)
 class LocationAreaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'parent', 'country', 'type', 'map_bounds')
+    list_display = ('id', 'name', 'parent', 'country', 'type', 'bounds')
     list_filter = ('country', 'type')
     search_fields = (
         'name',

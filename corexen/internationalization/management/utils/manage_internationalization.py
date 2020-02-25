@@ -1,4 +1,4 @@
-from corexen.internationalization.models import Country, City, LanguageCode, LatLngBounds
+from corexen.internationalization.models import Country, City, LanguageCode
 from corexen.utils.shortcuts import get_object_or_none
 
 
@@ -13,11 +13,9 @@ class ManageInternationalization:
         return country
 
     @staticmethod
-    def get_or_create_location(instance_location: City, instance_bounds: LatLngBounds):
+    def get_or_create_location(instance_location: City):
         location = get_object_or_none(City, code=instance_location.code, country=instance_location.country.pk)
         if not location:
-            instance_bounds.save()
-            instance_location.map_bounds_id = instance_bounds.pk
             instance_location.save()
             return instance_location
         return location

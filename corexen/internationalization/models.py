@@ -5,18 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from corexen.utils.models import JSONField, CitixenModel, RandomFileName
 
 
-class LatLngBounds(models.Model):
-    name = models.CharField(max_length=120, null=True)
-    northeast_latitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
-    northeast_longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
-    southwest_latitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
-    southwest_longitude = models.DecimalField(max_digits=18, decimal_places=15, default=0)
-
-    def __str__(self):
-        return f'{self.name}: NE[{self.northeast_latitude}, {self.northeast_longitude}] - ' \
-               f'SW[{self.southwest_latitude}, {self.southwest_longitude}] '
-
-
 class Country(CitixenModel):
     """Country model."""
 
@@ -58,14 +46,18 @@ class City(CitixenModel):
         administrative_area_level_4 = 'administrative_area_level_4', _('Administrative Area Level 4')
         administrative_area_level_5 = 'administrative_area_level_5', _('Administrative Area Level 5')
 
+    code = models.IntegerField(null=True)
     name = models.CharField(max_length=120)
     flag = models.ImageField(upload_to=RandomFileName('locations/images/'))
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
-    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='locations')
-    code = models.IntegerField(null=True)
+
     type = models.CharField(max_length=60, choices=Types.choices, default=Types.locality)
+    bounds = JSONField(null=True, blank=True)
+
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='locations')
+
+    # Google data
     google_map_key = CICharField(max_length=150, unique=True)
-    map_bounds = models.OneToOneField(LatLngBounds, null=True, blank=True, on_delete=models.CASCADE)
     geo_code_json = JSONField(null=True, blank=True)
 
     class Meta:

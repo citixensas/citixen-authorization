@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from corexen.internationalization.management.utils import ManageInternationalization
-from corexen.internationalization.models import Country, City, LatLngBounds
+from corexen.internationalization.models import Country, City
 
 
 class Command(BaseCommand):
@@ -34,13 +34,7 @@ class Command(BaseCommand):
             instances_administrative_area_level_1 = {}
 
             def generate_instance_bound(google_data):
-                return LatLngBounds(
-                    name=google_data['formatted_address'],
-                    northeast_latitude=Decimal(google_data['geometry']['viewport']['northeast']['lat']),
-                    northeast_longitude=Decimal(google_data['geometry']['viewport']['northeast']['lng']),
-                    southwest_latitude=Decimal(google_data['geometry']['viewport']['southwest']['lat']),
-                    southwest_longitude=Decimal(google_data['geometry']['viewport']['southwest']['lng']),
-                )
+                return google_data['geometry']['viewport']
 
             # Load data Administrative Area Level 1
             with open(os.path.join(settings.DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
@@ -48,19 +42,18 @@ class Command(BaseCommand):
                 for location in data:
                     print('administrative_area_level_1: ' + location['administrative_area_level_1'])
                     instance_location = City(
+                        code=int(location['code_administrative_area_level_1']),
                         name=location['administrative_area_level_1'],
                         flag='locations/flag.jpg',
                         country=country,
                         parent=None,
-                        code=int(location['code_administrative_area_level_1']),
                         type=City.Types.administrative_area_level_1,
+                        bounds=generate_instance_bound(location['google']),
                         google_map_key=location['google']['formatted_address'],
                         geo_code_json=location['google']
                     )
-                    instance_bounds = generate_instance_bound(location['google'])
                     instance_db = ManageInternationalization.get_or_create_location(
-                        instance_location=instance_location,
-                        instance_bounds=instance_bounds
+                        instance_location=instance_location
                     )
                     instances_administrative_area_level_1.update({
                         str(instance_location.code): instance_db
@@ -76,19 +69,18 @@ class Command(BaseCommand):
                     print('locality: ' + str(locality) + ' ' + location['locality'])
 
                     instance_location = City(
+                        code=int(location['code_locality']),
                         name=location['locality'],
                         flag='locations/flag.jpg',
                         country=country,
                         parent=instances_administrative_area_level_1[str(location['code_administrative_area_level_1'])],
-                        code=int(location['code_locality']),
                         type=City.Types.locality,
+                        bounds=generate_instance_bound(location['google']),
                         google_map_key=location['google']['formatted_address'],
                         geo_code_json=location['google']
                     )
-                    instance_bounds = generate_instance_bound(location['google'])
                     instance_db = ManageInternationalization.get_or_create_location(
-                        instance_location=instance_location,
-                        instance_bounds=instance_bounds
+                        instance_location=instance_location
                     )
                     instances_locality.update({
                         str(instance_location.code): instance_db
