@@ -1,8 +1,6 @@
 import json
 import os
-from decimal import Decimal
-
-from django.conf import settings
+import environ
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -12,6 +10,10 @@ from corexen.internationalization.models import Country, City
 
 class Command(BaseCommand):
     help = 'Creation or Update Colombia'
+    ROOT_DIR = (
+        environ.Path(__file__) - 5
+    )
+    DATA_DIR = ROOT_DIR.path('data')
 
     def handle(self, *args, **options):
         with transaction.atomic():
@@ -37,7 +39,7 @@ class Command(BaseCommand):
                 return google_data['geometry']['viewport']
 
             # Load data Administrative Area Level 1
-            with open(os.path.join(settings.DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
+            with open(os.path.join(self.DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
                     print('administrative_area_level_1: ' + location['administrative_area_level_1'])
@@ -62,7 +64,7 @@ class Command(BaseCommand):
             instances_locality = {}
             # Load data Locality
             locality = 0
-            with open(os.path.join(settings.DATA_DIR, 'colombia.json')) as json_file:
+            with open(os.path.join(self.DATA_DIR, 'colombia.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
                     locality += 1
