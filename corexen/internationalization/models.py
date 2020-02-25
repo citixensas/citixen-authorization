@@ -66,7 +66,7 @@ class City(CitixenModel):
         unique_together = [['country', 'code']]
 
     def __str__(self):
-        return f'{self.name} is a location of {self.country.name}'
+        return f'{self.name} is a location of {self.country}'
 
 
 class LanguageCode(CitixenModel):

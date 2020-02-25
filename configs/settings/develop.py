@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     "corexen.companies",
     "corexen.internationalization",
     "corexen.users",
+    "silk"
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -114,6 +115,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "corexen.users.middleware.JWTAuthenticationMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
+
 
 STATIC_URL = '/static/'

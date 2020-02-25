@@ -20,8 +20,9 @@ class CountryAdmin(admin.ModelAdmin):
 
 @admin.register(City)
 class LocationAreaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'parent', 'country', 'type', 'bounds')
-    list_filter = ('country', 'type')
+    list_display = ('id', 'name', 'parent', 'type', 'bounds')
+    list_filter = ('type',)
+    raw_id_fields = ('country', 'parent')
     search_fields = (
         'name',
         'code',
@@ -29,3 +30,6 @@ class LocationAreaAdmin(admin.ModelAdmin):
         'google_map_key'
     )
     ordering = ('-id',)
+
+    def get_queryset(self, request):
+        return super(LocationAreaAdmin, self).get_queryset(request).select_related('parent', 'parent__country')
