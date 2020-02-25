@@ -11,7 +11,7 @@ from corexen.internationalization.models import Country, City
 class Command(BaseCommand):
     help = 'Creation or Update Colombia'
     ROOT_DIR = (
-        environ.Path(__file__) - 5
+        environ.Path(__file__) - 2
     )
     DATA_DIR = ROOT_DIR.path('data')
 
