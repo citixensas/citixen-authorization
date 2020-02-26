@@ -19,11 +19,6 @@ if 'sqlite' in settings.DATABASES['default']['ENGINE']:
         def db_type(self, connection):
             return 'text'
 
-        def from_db_value(self, value, expression, connection):
-            if value is not None:
-                return self.to_python(value)
-            return value
-
         def to_python(self, value):
             if value is not None:
                 try:

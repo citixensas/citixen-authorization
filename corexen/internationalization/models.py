@@ -2,7 +2,9 @@ from django.contrib.postgres.fields import CICharField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from corexen.internationalization.constants import schema_location_area_bound
 from corexen.utils.models import JSONField, CitixenModel, RandomFileName
+from corexen.utils.validators import JSONSchemaValidator
 
 
 class Country(CitixenModel):
@@ -52,7 +54,7 @@ class City(CitixenModel):
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
 
     type = models.CharField(max_length=60, choices=Types.choices, default=Types.locality)
-    bounds = JSONField(null=True, blank=True)
+    bounds = JSONField(null=True, blank=True, validators=[JSONSchemaValidator(limit_value=schema_location_area_bound)])
 
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='locations')
 
