@@ -6,6 +6,9 @@ services:
     build:
       context: .
       dockerfile: ./compose/develop/django/Dockerfile
+    command: "/start"
     volumes:
       - .:/app
+    ports:
+      - 8000:8000
 

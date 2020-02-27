@@ -1,9 +1,39 @@
 """Citixen utilities."""
+import json
 import os
 import uuid
 
+from django.conf import settings
+from django.contrib.postgres.fields import (JSONField as DjangoJSONField)
 from django.db import models
+from django.db.models import Field
 from django.utils.deconstruct import deconstructible
+
+
+class JSONField(DjangoJSONField):
+    pass
+
+
+if 'sqlite' in settings.DATABASES['default']['ENGINE']:
+    class JSONField(Field):
+        def db_type(self, connection):
+            return 'text'
+
+        def to_python(self, value):
+            if value is not None:
+                try:
+                    return json.loads(value)
+                except (TypeError, ValueError):
+                    return value
+            return value
+
+        def get_prep_value(self, value):
+            if value is not None:
+                return str(json.dumps(value))
+            return value
+
+        def value_to_string(self, obj):
+            return self.value_from_object(obj)
 
 
 class CitixenModel(models.Model):

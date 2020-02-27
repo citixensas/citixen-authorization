@@ -3,7 +3,7 @@ from uuid import uuid4
 from django.contrib.postgres.fields import CICharField
 from django.db import models
 
-from corexen.internationalization.models import City, Country, LanguageCode, LatLngBounds
+from corexen.internationalization.models import City, Country, LanguageCode
 from corexen.utils.models import CitixenModel, RandomFileName
 
 

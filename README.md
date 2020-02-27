@@ -57,3 +57,26 @@ Does the code actually work?
     source <YOURVIRTUALENV>/bin/activate
     (myenv) $ pip install tox
     (myenv) $ tox
+
+
+BumpVersion
+-----------
+
+bumpversion [major|minor|patch]
+
+$ cat VERSION
+0.0.0
+$ bumpversion major; cat VERSION
+1.0.0-dev0
+$ bumpversion minor; cat VERSION
+1.1.0-dev0
+$ bumpversion patch; cat VERSION
+1.1.1-dev0
+$ bumpversion build; cat VERSION
+1.1.1-dev1
+$ bumpversion build; cat VERSION
+1.1.1-dev2
+$ bumpversion --tag release; cat VERSION
+1.1.1
+$ bumpversion minor; cat VERSION
+1.2.0-dev0

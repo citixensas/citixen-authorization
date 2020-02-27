@@ -2,7 +2,7 @@
 
 mock>=3.0.5
 flake8>=3.7.9
-pytest==5.3.3
+pytest==5.3.5
 pytest-django==3.8.0
 pytest-cov==2.8.1
 Faker==4.0.0
