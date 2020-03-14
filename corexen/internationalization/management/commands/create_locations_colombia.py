@@ -42,7 +42,6 @@ class Command(BaseCommand):
             with open(os.path.join(self.DATA_DIR, 'colombia_administrative_area_level_1.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
-                    print('administrative_area_level_1: ' + location['administrative_area_level_1'])
                     instance_location = City(
                         code=int(location['code_administrative_area_level_1']),
                         name=location['administrative_area_level_1'],
@@ -63,13 +62,9 @@ class Command(BaseCommand):
 
             instances_locality = {}
             # Load data Locality
-            locality = 0
             with open(os.path.join(self.DATA_DIR, 'colombia.json')) as json_file:
                 data = json.load(json_file)
                 for location in data:
-                    locality += 1
-                    print('locality: ' + str(locality) + ' ' + location['locality'])
-
                     instance_location = City(
                         code=int(location['code_locality']),
                         name=location['locality'],
