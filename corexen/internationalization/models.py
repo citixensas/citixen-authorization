@@ -59,8 +59,8 @@ class City(CitixenModel):
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='locations')
 
     # Zoom
-    zoom_desktop = models.IntegerField(null=True)
-    zoom_mobile = models.IntegerField(null=True)
+    zoom_desktop = models.IntegerField(default=14)
+    zoom_mobile = models.IntegerField(default=13)
 
     # Google data
     google_map_key = CICharField(max_length=150, unique=True)
