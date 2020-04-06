@@ -52,6 +52,8 @@ class Headquarter(CitixenModel):
     neighborhood = models.CharField(max_length=120, blank=True, null=True)
     city = models.ForeignKey(City, on_delete=models.PROTECT, related_name='headquarters')
 
+    google_key = models.CharField(max_length=120, null=True)
+
     is_deleted = models.BooleanField(default=False)
 
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='headquarters')
