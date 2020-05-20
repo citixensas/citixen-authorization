@@ -289,7 +289,7 @@ class User(AbstractUser,
         ordering = ('first_name', 'last_name')
 
     @property
-    def is_verified_email(self):
+    def has_verified_email(self):
         """Returns true if user has verified email."""
         if self.email and not (
             self.non_verified_email
@@ -300,7 +300,7 @@ class User(AbstractUser,
         return False
 
     @property
-    def is_verified_phone_number(self):
+    def has_verified_phone_number(self):
         """Returns true if user has verified phone."""
         if self.phone_number and not (
             self.non_verified_phone_number

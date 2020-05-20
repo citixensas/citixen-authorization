@@ -124,7 +124,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertFalse(is_verified)
@@ -142,7 +142,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertTrue(is_verified)
@@ -158,7 +158,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertTrue(is_verified)
@@ -173,7 +173,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertFalse(is_verified)
@@ -189,7 +189,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertFalse(is_verified)
@@ -206,7 +206,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertTrue(is_verified)
@@ -222,7 +222,7 @@ class VerificationEmailTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_email
+        is_verified = user.has_verified_email
 
         # Assert
         self.assertFalse(is_verified)
@@ -242,7 +242,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertFalse(is_verified)
@@ -257,7 +257,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertFalse(is_verified)
@@ -273,7 +273,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertFalse(is_verified)
@@ -289,7 +289,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertFalse(is_verified)
@@ -307,7 +307,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertTrue(is_verified)
@@ -323,7 +323,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertTrue(is_verified)
@@ -340,7 +340,7 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
         user = User.objects.create(**user_data)
 
         # Act
-        is_verified = user.is_verified_phone_number
+        is_verified = user.has_verified_phone_number
 
         # Assert
         self.assertTrue(is_verified)
