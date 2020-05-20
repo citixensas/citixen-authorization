@@ -1,5 +1,6 @@
 import uuid
 
+from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Permission
 from faker import Faker
@@ -107,3 +108,241 @@ class UsernameValidationTestCase(CitixenTestCase):
         user = User.objects.create_user(username='MYUSERNAMEINUPPERCASE')
         user.refresh_from_db()
         self.assertEqual(user.username, 'myusernameinuppercase')
+
+
+class VerificationEmailTestCase(CitixenTestCase):
+
+    def test_no_verified_two_diffs_emails_and_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'email': fake.email(),
+            'non_verified_email': fake.email(),
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_same_emails_and_verification_date(self):
+        # Arrange
+        email = fake.email()
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'email': email,
+            'non_verified_email': email,
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertTrue(is_verified)
+
+    def test_email_without_verification_date(self):
+        # Arrange
+        email = fake.email()
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'email': email,
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertTrue(is_verified)
+
+    def test_non_verified_email_without_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'non_verified_email': fake.email(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_non_verified_email_with_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'non_verified_email': fake.email(),
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_email_with_verification_date(self):
+        # Arrange
+        email = fake.email()
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'email': email,
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertTrue(is_verified)
+
+    def test_two_diffs_emails_without_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'email': fake.email(),
+            'non_verified_email': fake.email(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_email
+
+        # Assert
+        self.assertFalse(is_verified)
+
+
+class VerificationPhoneNumberTestCase(CitixenTestCase):
+
+    def test_no_verified_two_diffs_phones_with_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'phone_number': fake.numerify('+5731########'),
+            'non_verified_phone_number': fake.numerify('+5731########'),
+            'phone_number_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_non_verified_phone_without_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'non_verified_phone_number': fake.numerify('+5731########'),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_non_verified_phone_with_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'non_verified_phone_number': fake.numerify('+5731########'),
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_two_diffs_phones_without_verification_date(self):
+        # Arrange
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'phone_number': fake.numerify('+5731########'),
+            'non_verified_phone_number': fake.numerify('+5731########'),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertFalse(is_verified)
+
+    def test_same_phones_with_verification_date(self):
+        # Arrange
+        phone_number = fake.numerify('+5731########')
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'phone_number': phone_number,
+            'non_verified_phone_number': phone_number,
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertTrue(is_verified)
+
+    def test_phone_without_verification_date(self):
+        # Arrange
+        phone_number = fake.numerify('+5731########')
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'phone_number': phone_number,
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertTrue(is_verified)
+
+    def test_phone_with_verification_date(self):
+        # Arrange
+        phone_number = fake.numerify('+5731########')
+        user_data = {
+            'username': fake.user_name(),
+            'password': fake.password(),
+            'phone_number': phone_number,
+            'email_verified_at': timezone.now(),
+        }
+        user = User.objects.create(**user_data)
+
+        # Act
+        is_verified = user.is_verified_phone_number
+
+        # Assert
+        self.assertTrue(is_verified)
+
+

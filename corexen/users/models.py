@@ -1,15 +1,10 @@
-import unicodedata
 from distutils.version import LooseVersion
 from uuid import uuid4
 
 from django.contrib import auth
 from django.contrib.auth.models import (
-    UserManager,
-    _user_has_module_perms,
+    AbstractBaseUser, Group, Permission, UserManager, _user_has_module_perms,
     _user_has_perm,
-    Permission,
-    Group,
-    AbstractBaseUser
 )
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.postgres.fields import CICharField, CIEmailField
@@ -292,6 +287,28 @@ class User(AbstractUser,
     class Meta:
         """Meta options."""
         ordering = ('first_name', 'last_name')
+
+    @property
+    def is_verified_email(self):
+        """Returns true if user has verified email."""
+        if self.email and not (
+            self.non_verified_email
+            and self.email != self.non_verified_email
+        ):
+            return True
+
+        return False
+
+    @property
+    def is_verified_phone_number(self):
+        """Returns true if user has verified phone."""
+        if self.phone_number and not (
+            self.non_verified_phone_number
+            and self.phone_number != self.non_verified_phone_number
+        ):
+            return True
+
+        return False
 
 
 class UserPermission(CitixenModel):
