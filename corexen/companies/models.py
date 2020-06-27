@@ -23,6 +23,8 @@ class Company(ParanoidModel, CitixenModel):
 
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='companies')
 
+    default_manager = models.Manager()
+
     class Meta:
         """Meta options."""
         ordering = ('name',)
@@ -55,6 +57,8 @@ class Headquarter(ParanoidModel, CitixenModel):
     google_key = models.CharField(max_length=120, null=True)
 
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='headquarters')
+
+    default_manager = models.Manager()
 
     class Meta:
         """Meta options."""

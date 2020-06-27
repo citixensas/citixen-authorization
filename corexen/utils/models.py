@@ -95,8 +95,6 @@ class ParanoidModel(models.Model):
     objects = ParanoidManager()
     original_objects = models.Manager()
 
-    default_manager = models.Manager()
-
     def delete(self, **kwargs):
         self.deleted_at = timezone.now()
         self.save()
