@@ -82,3 +82,4 @@ $ bumpversion minor; cat VERSION
 1.2.0-dev0
 
 docker-compose -f .\develop.yml run --rm corexen_develop.django bumpversion --tag release
+docker-compose -f .\develop.yml run --rm corexen_develop.django bumpversion minor
