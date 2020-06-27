@@ -4,10 +4,10 @@ from django.contrib.postgres.fields import CICharField
 from django.db import models
 
 from corexen.internationalization.models import City, Country, LanguageCode
-from corexen.utils.models import CitixenModel, RandomFileName
+from corexen.utils.models import CitixenModel, RandomFileName, ParanoidModel
 
 
-class Company(CitixenModel):
+class Company(ParanoidModel, CitixenModel):
     """Company model."""
 
     nit = models.CharField(max_length=50)
@@ -31,7 +31,7 @@ class Company(CitixenModel):
         return self.name
 
 
-class Headquarter(CitixenModel):
+class Headquarter(ParanoidModel, CitixenModel):
     """Headquarter model."""
 
     uuid = models.UUIDField(default=uuid4, primary_key=True)
@@ -54,8 +54,6 @@ class Headquarter(CitixenModel):
 
     google_key = models.CharField(max_length=120, null=True)
 
-    is_deleted = models.BooleanField(default=False)
-
     created_by = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='headquarters')
 
     class Meta:
@@ -64,10 +62,6 @@ class Headquarter(CitixenModel):
 
     def activate_or_deactivate(self):
         self.is_active = not self.is_active
-        self.save()
-
-    def mark_as_delete(self):
-        self.is_deleted = True
         self.save()
 
     def __str__(self):

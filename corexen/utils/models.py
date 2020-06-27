@@ -5,9 +5,10 @@ import uuid
 
 from django.conf import settings
 from django.contrib.postgres.fields import (JSONField as DjangoJSONField)
-from django.db import models
 from django.db.models import Field
 from django.utils.deconstruct import deconstructible
+from django.db import models
+from django.utils import timezone
 
 
 class JSONField(DjangoJSONField):
@@ -63,3 +64,39 @@ class RandomFileName(object):
         # @note It's up to the validators to check if it's the correct file type in name or if one even exist.
         extension = os.path.splitext(filename)[1]
         return self.path % (uuid.uuid4(), extension)
+
+
+class ParanoidQuerySet(models.QuerySet):
+    """
+    Prevents objects from being hard-deleted. Instead, sets the
+    ``date_deleted``, effectively soft-deleting the object.
+    """
+
+    def delete(self):
+        for obj in self:
+            obj.deleted_at = timezone.now()
+            obj.save()
+
+
+class ParanoidManager(models.Manager):
+    """
+    Only exposes objects that have NOT been soft-deleted.
+    """
+
+    def get_queryset(self):
+        return ParanoidQuerySet(self.model, using=self._db).filter(deleted_at__isnull=True)
+
+
+class ParanoidModel(models.Model):
+    class Meta:
+        abstract = True
+
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    objects = ParanoidManager()
+    original_objects = models.Manager()
+
+    default_manager = models.Manager()
+
+    def delete(self, **kwargs):
+        self.deleted_at = timezone.now()
+        self.save()

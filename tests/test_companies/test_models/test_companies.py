@@ -4,7 +4,7 @@ from test_plus import TestCase
 
 from corexen.companies.models import Company, Headquarter
 from corexen.internationalization.models import Country, City
-from corexen.utils.factories import CompanyFactory
+from tests.test_companies.factories import HeadquarterFactory, CompanyFactory, CountryFactory, CityFactory
 
 fake = Faker()
 
@@ -15,7 +15,7 @@ class CompanyModelTestCase(TestCase):
         self.country = Country.objects.create(name='Colombia')
 
     def test_return_company_string_representation(self):
-        company = Company.objects.create(
+        company = CompanyFactory(
             name='Compañía de prueba',
             country=self.country,
             created_by=self.user)
@@ -32,43 +32,57 @@ class CompanyModelTestCase(TestCase):
             **{'name': 'Test company', 'country': self.country, 'created_by': self.user}
         )
 
+    def test_should_softdelete_CompanyFactory(self):
+        company = CompanyFactory()
+        uuid = company.pk
+
+        company.delete()
+
+        exists = Company.objects.filter(pk=uuid).exists()
+
+        self.assertFalse(exists)
+
+        exists = Company.original_objects.filter(pk=uuid).exists()
+
+        self.assertTrue(exists)
+
 
 class HeadquarterModelTestCase(TestCase):
     def setUp(self) -> None:
         self.user = self.make_user()
-        self.country = Country.objects.create(name='Colombia')
-        self.city = City.objects.create(
+        self.country = CountryFactory(name='Colombia')
+        self.city = CityFactory(
             country=self.country,
             google_map_key='key',
             code=5001,
             type=City.Types.locality
         )
-        self.company = Company.objects.create(
+        self.company = CompanyFactory(
             name='test company',
             country=self.country,
             created_by=self.user,
             namespace='testcompany')
-        self.headquarter = Headquarter.objects.create(
+        self.headquarter = HeadquarterFactory(
             company=self.company, name='test headquarter', address='address',
             city=self.city, created_by=self.user
         )
 
     def test_should_create_headquarters_with_the_same_name_in_different_companies_and_cities(self):
-        other_city = City.objects.create(
+        other_city = CityFactory(
             name='city #2',
             country=self.country,
             google_map_key='key #2',
             code=5002,
             type=City.Types.locality
         )
-        other_company = Company.objects.create(
+        other_company = CompanyFactory(
             name='test company #2',
             country=self.country,
             created_by=self.user,
             namespace='testcompany2'
         )
 
-        other_headquarter = Headquarter.objects.create(
+        other_headquarter = HeadquarterFactory(
             **{
                 'company': other_company,
                 'name': 'test headquarter',
@@ -82,14 +96,14 @@ class HeadquarterModelTestCase(TestCase):
 
     def test_should_create_headquarters_with_the_same_name_in_the_same_city(self):
         # Even if the companies doesn't the same.
-        other_company = Company.objects.create(
+        other_company = CompanyFactory(
             name='test company #2',
             country=self.country,
             created_by=self.user,
             namespace='testcompany2'
         )
 
-        other_headquarter = Headquarter.objects.create(
+        other_headquarter = HeadquarterFactory(
             **{
                 'company': other_company,
                 'name': 'test headquarter',
@@ -101,8 +115,8 @@ class HeadquarterModelTestCase(TestCase):
 
         self.assertIsNotNone(other_headquarter)
 
-    def test_should_create_headquarters_with_the_same_name_in_the_same_company(self):
-        other_city = City.objects.create(
+    def test_should_create_headquarters_with_the_same_name_in_the_same_CompanyFactory(self):
+        other_city = CityFactory(
             name='city #2',
             country=self.country,
             google_map_key='key #2',
@@ -110,7 +124,7 @@ class HeadquarterModelTestCase(TestCase):
             type=City.Types.locality
         )
 
-        other_headquarter = Headquarter.objects.create(
+        other_headquarter = HeadquarterFactory(
             **{
                 'company': self.company,
                 'name': 'test headquarter',
@@ -121,3 +135,17 @@ class HeadquarterModelTestCase(TestCase):
         )
 
         self.assertIsNotNone(other_headquarter)
+
+    def test_should_softdelete_headquarter(self):
+        headquarter = HeadquarterFactory()
+        uuid = headquarter.pk
+
+        headquarter.delete()
+
+        exists = Headquarter.objects.filter(pk=uuid).exists()
+
+        self.assertFalse(exists)
+
+        exists = Headquarter.original_objects.filter(pk=uuid).exists()
+
+        self.assertTrue(exists)
