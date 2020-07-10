@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Permission
@@ -111,6 +112,14 @@ class UsernameValidationTestCase(CitixenTestCase):
 
 
 class VerificationEmailTestCase(CitixenTestCase):
+
+    def test_should_user_not_save_with_email_invalid(self):
+        with self.assertRaises(ValidationError):
+            User.objects.create(username='user', email='emailuser@domain.invalid')
+
+    def test_should_user_not_save_with_non_verified_email_invalid(self):
+        with self.assertRaises(ValidationError):
+            User.objects.create(username='user', non_verified_email='emailuser@domain.invalid')
 
     def test_no_verified_two_diffs_emails_and_verification_date(self):
         # Arrange
@@ -344,5 +353,3 @@ class VerificationPhoneNumberTestCase(CitixenTestCase):
 
         # Assert
         self.assertTrue(is_verified)
-
-

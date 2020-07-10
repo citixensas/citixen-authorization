@@ -1,4 +1,5 @@
 djangorestframework_simplejwt==4.4.0
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
-Pillow==7.0.0
+Pillow==7.2.0
 jsonschema==3.2.0 # https://github.com/Julian/jsonschema
+tld==0.12.2 # https://github.com/barseghyanartur/tld

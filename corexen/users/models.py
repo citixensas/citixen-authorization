@@ -15,6 +15,7 @@ from django.utils.translation import gettext_lazy as _
 
 from corexen.companies.models import Headquarter
 from corexen.utils.models import CitixenModel
+from corexen.utils.validators import CorexenEmailValidator
 
 version_Django = version.get_main_version()
 
@@ -33,6 +34,7 @@ class AbstractUser(AbstractBaseUser):
         Username and password are required. Other fields are optional.
         """
     username_validator = UnicodeUsernameValidator()
+    email_validator = CorexenEmailValidator()
 
     username = CICharField(
         _('username'),
@@ -46,7 +48,12 @@ class AbstractUser(AbstractBaseUser):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = CIEmailField(_('email address'), blank=True, null=True)
+    email = CIEmailField(
+        _('email address'),
+        blank=True,
+        null=True,
+        validators=[CorexenEmailValidator()],
+    )
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -90,6 +97,11 @@ class AbstractUser(AbstractBaseUser):
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
+
+    def save(self, *args, **kwargs):
+        if self.email:
+            self.email_validator(self.email)
+        super(AbstractUser, self).save(*args, **kwargs)
 
     def get_full_name(self):
         """
@@ -275,18 +287,24 @@ class User(AbstractUser,
         _('non email address'),
         null=True,
         blank=True,
-        help_text=_('Verified email. This field is not used by all user profiles.')
+        help_text=_('Verified email. This field is not used by all user profiles.'),
+        validators=[CorexenEmailValidator()],
     )
     email_verified_at = models.DateTimeField(
         _('email verified at'),
         null=True,
         blank=True,
-        help_text=_('Date time on which the email was verified.')
+        help_text=_('Date time on which the email was verified.'),
     )
 
     class Meta:
         """Meta options."""
         ordering = ('first_name', 'last_name')
+
+    def save(self, *args, **kwargs):
+        if self.non_verified_email:
+            self.email_validator(self.non_verified_email)
+        super(User, self).save(*args, **kwargs)
 
     @property
     def has_verified_email(self):
