@@ -3,7 +3,7 @@
 
 bump2version==1.0.0
 wheel==0.34.2
-django==3.0.8
+django==3.0.12
 googlemaps==4.4.1
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
 django-silk==4.0.1  # https://github.com/jazzband/django-silk
