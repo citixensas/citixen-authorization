@@ -27,7 +27,7 @@ class Country(CitixenModel):
     administrative_area_level_4_name = models.CharField(max_length=90, null=True, blank=True)
     administrative_area_level_5_name = models.CharField(max_length=90, null=True, blank=True)
     calling_code = models.CharField(max_length=9, default='')
-    iso_code = models.CharField(max_length=6, default=None)
+    iso_code = models.CharField(max_length=6, null=True)
 
     class Meta:
         """Meta options."""
