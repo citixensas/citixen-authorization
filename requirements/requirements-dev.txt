@@ -2,7 +2,7 @@
 -r ./requirements-testing.txt
 
 bump2version==1.0.0
-wheel==0.34.2
+wheel==0.38.1
 django==3.0.8
 googlemaps==4.4.1
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
