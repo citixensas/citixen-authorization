@@ -4,22 +4,16 @@ import os
 import uuid
 
 from django.conf import settings
-from django.contrib.postgres.fields import (JSONField as DjangoJSONField)
-from django.db.models import Field
 from django.utils.deconstruct import deconstructible
 from django.db import models
 from django.utils import timezone
 
 
-class JSONField(DjangoJSONField):
+class JSONField(models.JSONField):
     pass
 
-
 if 'sqlite' in settings.DATABASES['default']['ENGINE']:
-    class JSONField(Field):
-        def db_type(self, connection):
-            return 'text'
-
+    class JSONField(models.TextField):
         def to_python(self, value):
             if value is not None:
                 try:

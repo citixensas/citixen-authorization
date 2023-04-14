@@ -7,7 +7,4 @@ class InternationalizationConfig(AppConfig):
     verbose_name = _("Internationalization")
 
     def ready(self):
-        try:
-            from corexen.internationalization.signals import *
-        except ImportError:
-            pass
+        pass

@@ -7,7 +7,4 @@ class UsersConfig(AppConfig):
     verbose_name = _("Users")
 
     def ready(self):
-        try:
-            from corexen.users.signals import *
-        except ImportError:
-            pass
+        pass

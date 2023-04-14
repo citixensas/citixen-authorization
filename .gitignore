@@ -31,6 +31,7 @@ htmlcov
 # Pycharm/Intellij
 .idea
 venv/
+.venv*/
 .vscode/
 
 # DB Sqlite Ignore

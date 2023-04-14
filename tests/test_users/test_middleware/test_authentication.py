@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -22,9 +22,9 @@ class PostWithAppUser(PostWithAuthView):
 
 
 urlpatterns = [
-    url(r'^post$', PostView.as_view()),
-    url(r'^post_login$', PostWithAuthView.as_view()),
-    url(r'^post_app_user$', PostWithAppUser.as_view()),
+    re_path(r'^post$', PostView.as_view()),
+    re_path(r'^post_login$', PostWithAuthView.as_view()),
+    re_path(r'^post_app_user$', PostWithAppUser.as_view()),
 ]
 
 

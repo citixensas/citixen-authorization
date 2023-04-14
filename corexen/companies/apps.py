@@ -7,7 +7,4 @@ class CompaniesConfig(AppConfig):
     verbose_name = _("Companies")
 
     def ready(self):
-        try:
-            from corexen.companies.signals import *
-        except ImportError:
-            pass
+        pass
