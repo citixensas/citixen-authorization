@@ -1,4 +1,3 @@
-from distutils.version import LooseVersion
 from uuid import uuid4
 
 from django.contrib import auth
@@ -10,20 +9,14 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.postgres.fields import CICharField, CIEmailField
 from django.core.mail import send_mail
 from django.db import models
-from django.utils import timezone, version
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from corexen.companies.models import Headquarter
 from corexen.utils.models import CitixenModel
 from corexen.utils.validators import CorexenEmailValidator
 
-version_Django = version.get_main_version()
-
-if LooseVersion(version_Django) >= LooseVersion('3.0'):
-    # noinspection PyUnresolvedReferences
-    from django.contrib.auth.models import _user_get_permissions
-else:
-    from django.contrib.auth.models import _user_get_all_permissions
+from django.contrib.auth.models import _user_get_permissions
 
 
 class AbstractUser(AbstractBaseUser):
@@ -173,10 +166,7 @@ class PermissionsMixin(models.Model):
         return permissions
 
     def get_all_permissions(self, obj=None):
-        if LooseVersion(version_Django) >= LooseVersion('3.0'):
-            return _user_get_permissions(self, obj, 'all')
-        else:
-            return _user_get_all_permissions(self, obj)
+        return _user_get_permissions(self, obj, 'all')
 
     def has_perm(self, perm, obj=None):
         """

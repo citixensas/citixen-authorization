@@ -43,3 +43,5 @@ CITIXEN = {
     'APPLICATION_IDENTIFIER': __header_format('App-id'),
     'PROFILE_FINDER': 'tests.test_users.test_middleware.test_profile.ProfileFinder'
 }
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
